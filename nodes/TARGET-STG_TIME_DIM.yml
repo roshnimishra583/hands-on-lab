@@ -106,7 +106,7 @@ operation:
           columnCounter: 0d775032-855c-47b8-bdae-3f60a8483b52
           stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
         config: {}
-        dataType: VARCHAR(2)
+        dataType: VARCHAR(50)
         description: ""
         name: T_AM_PM
         nullable: true
@@ -122,7 +122,7 @@ operation:
         config: {}
         dataType: VARCHAR(20)
         description: ""
-        name: T_SHIFT
+        name: Time_SHIFT
         nullable: true
         sourceColumnReferences:
           - columnReferences:
