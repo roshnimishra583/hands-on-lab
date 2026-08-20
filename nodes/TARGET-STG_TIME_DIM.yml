@@ -1,0 +1,180 @@
+fileVersion: 1
+id: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+name: STG_TIME_DIM
+operation:
+  config:
+    insertStrategy: INSERT
+    postSQL: ""
+    preSQL: ""
+    testsEnabled: true
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: d052304f-0288-4b33-acc0-c78a3fbfe624
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: T_TIME_SK
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 49426c31-7593-4c06-9927-02b89b7277a8
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 13f98925-95c7-4e8f-a222-85042c515f21
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: VARCHAR(16)
+        description: ""
+        name: T_TIME_ID
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 14e4a5b9-6867-4049-833f-f19b69b13a26
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 25826dbc-7eab-4ac8-b701-fd3fada0ab6e
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: T_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1ce94820-ea69-4f97-bc5e-cca60e0d7f8f
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: a1b1ae26-3d0b-4561-92a5-ba9a7e834524
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: T_HOUR
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 4598cfad-e610-4451-8716-acfa244e1c7c
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 9c22153e-cfe4-4636-8a0c-dd54888fb8e2
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: T_MINUTE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e2047d06-81e2-47b0-9921-eb0454c14668
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7ea6e1bc-8db2-414d-a623-0cc3e5953bdf
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: T_SECOND
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 12e98d13-d7af-4da1-bd57-da140b83f180
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0d775032-855c-47b8-bdae-3f60a8483b52
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: VARCHAR(2)
+        description: ""
+        name: T_AM_PM
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 04eca960-44d9-4eca-ba1e-832d3f9b8f4c
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 1f9ecbd4-32ce-4eda-8e9d-48eb89f0a6d3
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: VARCHAR(20)
+        description: ""
+        name: T_SHIFT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e3d9411a-3bf9-47c6-be8d-3f76238d9699
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 3a01e26f-bfe6-4204-9dbe-4a955dcbf715
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: VARCHAR(20)
+        description: ""
+        name: T_SUB_SHIFT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d92bc2b7-b744-4fb7-9b11-f3060a480662
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 9bf4a4b6-f824-490d-bb11-36acd7ef2f7d
+          stepCounter: 49ce6b71-bdc4-44e2-8638-2f35648ae759
+        config: {}
+        dataType: VARCHAR(20)
+        description: ""
+        name: T_MEAL_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: cefa55a7-fc9f-42ec-865b-9d721c49f819
+                stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          TIME_DIM: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SRC
+            nodeName: TIME_DIM
+        join:
+          joinCondition: FROM {{ ref('SRC', 'TIME_DIM') }} "TIME_DIM"
+        name: STG_TIME_DIM
+        noLinkRefs: []
+  name: STG_TIME_DIM
+  overrideSQL: false
+  schema: ""
+  sqlType: Stage
+  type: sql
+  version: 1
+type: Node
