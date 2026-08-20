@@ -3,8 +3,14 @@ id: 63a931e4-eccc-4043-aaac-1297704e9e55
 name: STG_ITEM
 operation:
   config:
+    deleteBefore: true
+    deleteWhereCondition: I_CLASS = 'pop'
+    duplicateCheck: true
+    duplicateCheckColumn:
+      columnCounter: 5b3419f8-c24b-4205-b279-1f1cea29a5ba
+      stepCounter: 63a931e4-eccc-4043-aaac-1297704e9e55
     insertStrategy: INSERT
-    nullCheck: true
+    nullCheck: false
     nullCheckColumn:
       columnCounter: 55275f09-6cdd-4cd0-8177-d4ad76f6f3f8
       stepCounter: 63a931e4-eccc-4043-aaac-1297704e9e55

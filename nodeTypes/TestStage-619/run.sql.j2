@@ -65,14 +65,24 @@
 				{{config.insertStrategy}}
 			{% endif %}
 		
-		{% if config.nullCheck %}
-		{{ stage('NULL CHECK') }}
+		
+		{% endfor %}
 
-		SELECT
-			COUNT(*) AS "NULL_COUNT"
-		FROM {{ ref_no_link(node.location.name, node.name) }}
-		WHERE "{{ config.nullCheckColumn.name }}" IS NULL
-	   {% endif %}
+	{% if config.nullCheck %}
+    {{ stage('NULL CHECK') }}
+
+    SELECT
+        'HAS NULL VALUES' AS "NULL_CHECK"
+    FROM (
+        SELECT
+            CASE
+                WHEN "{{ config.nullCheckColumn.name }}" IS NULL THEN 1
+                ELSE 0
+            END AS "NULL_COUNT"
+        FROM {{ ref_no_link(node.location.name, node.name) }}
+    )
+    WHERE "NULL_COUNT" > 0
+{% endif %}
 
 
 	   {% if config.duplicateCheck %}
@@ -85,8 +95,7 @@
 		GROUP BY "{{ config.duplicateCheckColumn.name }}"
 		HAVING COUNT(*) > 1
 	   {% endif %}
-		
-		{% endfor %}
+
 	
 	{% if config.postSQL %}
 		{{ stage('Post-SQL') }}

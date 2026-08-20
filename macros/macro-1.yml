@@ -1,0 +1,8 @@
+fileVersion: 1
+id: "1"
+macroString: |-
+  {% macro clean_phone_number(column_name) %}
+      REGEXP_REPLACE("{{ column_name }}", '[^0-9]', '')
+  {% endmacro %}
+name: macro
+type: Macro

@@ -98,5 +98,5 @@ metadata:
         type: columnDropdownSelector
         isRequired: false
         enableIf: "{% if config.duplicateCheck %} true {% else %} false {% endif %}"
-name: Copy of Stage
+name: TestStage
 type: NodeType
