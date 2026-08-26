@@ -143,7 +143,7 @@ operation:
         config: {}
         dataType: VARCHAR(117)
         description: ""
-        name: C_COMMENT
+        name: Cust_COMMENT
         nullable: true
         sourceColumnReferences:
           - columnReferences:
