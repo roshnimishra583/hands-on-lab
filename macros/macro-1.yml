@@ -4,5 +4,44 @@ macroString: |-
   {% macro clean_phone_number(column_name) %}
       REGEXP_REPLACE("{{ column_name }}", '[^0-9]', '')
   {% endmacro %}
+
+  {# ----------------------------------------------------------------------
+    Macro: safe_metadata
+
+    Purpose: Handles failures during Advanced Deploy metadata updates when dynamic
+    Jinja logic is present in node configurations.
+
+    Specifically addresses cases where:
+      - PreSQL or PostSQL contains embedded Jinja expressions (e.g., {{ ... }})
+      - Join clauses include conditional Jinja logic (e.g., {% if ... %})
+  ---------------------------------------------------------------------- #}
+  {% macro safe_metadata(value) %}
+      {% if value is not none %}
+          {{ value
+              | replace("{%", "{ %")
+              | replace("%}", "% }")
+              | replace("{{", "{ {")
+              | replace("}}", "} }")
+              | replace("{#", "{ #")
+              | replace("#}", "# }")
+              | replace("/*", "/ *")
+              | replace("*/", "* /")
+              | replace("--", "- -")
+          }}
+      {% else %}
+          {{ value }}
+      {% endif %}
+  {% endmacro %}
+  {% macro update_metadata(tag, diff, label) %}
+      {% set nsMetaVariables.metadataUpdate = nsMetaVariables.metadataUpdate + '-' + tag %}
+
+      {# Handle metaDataChanges #}
+      {% if nsMetaVariables.metaDataChanges %}
+          {% set nsMetaVariables.metaDataChanges = nsMetaVariables.metaDataChanges ~ "\n\n" ~ label ~ " Changes:\n" ~ diff %}
+      {% else %}
+          {% set nsMetaVariables.metaDataChanges = label ~ " Changes:\n" ~ diff %}
+      {% endif %}
+
+  {% endmacro %}
 name: macro
 type: Macro

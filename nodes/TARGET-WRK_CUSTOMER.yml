@@ -1,16 +1,33 @@
 fileVersion: 1
-id: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
-name: STG_CUSTOMER
+id: 7431afa0-9fd9-45af-a8b8-41bf73da0987
+name: WRK_CUSTOMER
 operation:
   config:
-    deleteBefore: false
-    deleteWhereCondition: ""
-    duplicateCheck: false
+    asofColumn:
+      items:
+        - {}
+    asofJoin: true
+    asofJoinMain: false
+    asofJoinON: false
+    asofJoinUSING: false
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    groupByAll: false
     insertStrategy: INSERT
-    nullCheck: false
+    orderby: false
+    orderbycolumn:
+      items:
+        - {}
     postSQL: ""
     preSQL: ""
-    testsEnabled: true
+    selectDistinct: false
+    testsEnabled: false
     truncateBefore: true
   database: ""
   deployEnabled: true
@@ -23,8 +40,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 6afe23a3-bcc4-4905-8e5c-e1a487901f99
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: b6a739c4-125d-41e8-a553-aa695eadd39b
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -37,8 +54,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 599c933f-7bd7-4a05-90cf-a3597ec98958
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: 19bf1d72-79f7-4d02-8ae7-9712c2ed502b
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -51,8 +68,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 758dd32b-2d60-4f17-9791-a298e7260af2
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: 99152b1c-8c5b-4e87-b061-98b8df00967e
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: VARCHAR(40)
         description: ""
@@ -65,8 +82,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 50fd8f91-6e54-432e-a9e8-9c071c421ca9
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: cc384df9-aacc-4a37-8190-bf2555ab1ebe
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -79,8 +96,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 1116631b-3661-49b8-8266-8ce6c23149dc
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: e5e3a19d-4259-43ef-832f-0a50901e3bff
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: VARCHAR(15)
         description: ""
@@ -90,11 +107,11 @@ operation:
           - columnReferences:
               - columnCounter: 043d8f86-755e-4270-9253-a66dd01410f8
                 stepCounter: 731a2d84-fde4-48fc-b05a-8bcc016d8510
-            transform: "{{ clean_phone_number('C_PHONE')}}"
+            transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 4def409d-7ecc-4842-8edc-2c70a7676652
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: 117cb89f-8cc2-420d-ae3e-660609cbc20d
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: NUMBER(12,2)
         description: ""
@@ -107,8 +124,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 83da9c15-8e57-4909-baae-d451c8e62c3d
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: d1e3a1a5-6a6f-4ffc-a092-e1d4d339f93f
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: VARCHAR(10)
         description: ""
@@ -121,8 +138,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 441d48bc-1e3c-479a-b42d-1a5eef87ecf2
-          stepCounter: 1d8fc649-0bf7-4bb7-a3ef-ccb77caf782d
+          columnCounter: 234289e0-f713-4868-958f-2e77ab35bbe1
+          stepCounter: 7431afa0-9fd9-45af-a8b8-41bf73da0987
         config: {}
         dataType: VARCHAR(117)
         description: ""
@@ -136,21 +153,20 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases:
-          CUSTOMER: 731a2d84-fde4-48fc-b05a-8bcc016d8510
+      - aliases: {}
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: SRC
             nodeName: CUSTOMER
         join:
-          joinCondition: FROM {{ ref('SRC', 'CUSTOMER') }} "CUSTOMER"
-        name: STG_CUSTOMER
+          joinCondition: ""
+        name: WRK_CUSTOMER
         noLinkRefs: []
-  name: STG_CUSTOMER
+  name: WRK_CUSTOMER
   overrideSQL: false
   schema: ""
-  sqlType: "619"
+  sqlType: "620"
   type: sql
   version: 1
 type: Node

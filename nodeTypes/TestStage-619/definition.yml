@@ -41,11 +41,13 @@ metadata:
         attributeName: truncateBefore
         type: toggleButton
         default: true
+        enableIf: "{% if config.deleteBefore %} false {% else %} true {% endif %}"
 
       - displayName: Delete Before
         attributeName: deleteBefore
         type: toggleButton
         default: false
+        enableIf: "{% if config.truncateBefore %} false {% else %} true {% endif %}"
 
       - displayName: Delete Where Condition
         attributeName: deleteWhereCondition
