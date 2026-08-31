@@ -617,36 +617,33 @@ does not permit copying or modification for any other purpose.
 
 
             {# Drop Columns #}
-            {% set nsVariables = namespace(colchanges=0) %}
-            {%- for dropCurCol in currentState.columns %}
-                {%- if dropCurCol.id not in desiredState.columns | map(attribute="id") %}
-                {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-
-                    {%- if nsVariables.colchanges == 1 %}
-                        {{ stage('Drop Columns') }}
-                        ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
-                        DROP COLUMN 
-                    {%- else %}
-                        , 
-                    {%- endif -%}
-                    "{{ dropCurCol.name }}"
-
-                    {# Metadata changes detected #}
-                    {% set nsMetaVariables.metaDataChanged = true %} 
-                {%- endif %}
-            {%- endfor %}
+			{%- set nsVariables = namespace(colchanges=0) %}
+			{%- for dropCurCol in currentState.columns %}
+				{%- if dropCurCol.id not in desiredState.columns | map(attribute="id") -%}
+				{%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
+					{%- if nsVariables.colchanges == 1 %}
+						{{ stage('Drop Columns') }}
+						ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
+						DROP COLUMN 
+					{% else -%}
+						, 
+					{%- endif -%}
+					"{{ dropCurCol.name }}"
+					{# Metadata changes detected #}
+					{%- set nsMetaVariables.metaDataChanged = true -%}
+				{%- endif -%}
+			{%- endfor %}
 
             {# Add Columns #}
-            {% set nsVariables = namespace(colchanges=0) %}
+            {%- set nsVariables = namespace(colchanges=0) %}
             {%- for addDesCol in desiredState.columns %}
                 {%- if addDesCol.id not in currentState.columns | map(attribute="id") %}
-                {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-
+                {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
                     {%- if nsVariables.colchanges == 1 %}
                         {{ stage('Add Columns') }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         ADD COLUMN
-                    {%- else %}
+                    {% else -%}
                         ,
                     {% endif -%}
                         "{{ addDesCol.name }}" {{ addDesCol.dataType }}
@@ -654,10 +651,9 @@ does not permit copying or modification for any other purpose.
                             {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{%- endif -%}
                         {% endif %}
                         {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDesCol.description | escape }}'{% endif -%}
-
                         {# Metadata changes detected #}
-                        {% set nsMetaVariables.metaDataChanged = true %} 
-                {%- endif -%}
+                        {%- set nsMetaVariables.metaDataChanged = true -%} 
+                {%- endif %}
             {%- endfor %}
 
             {# Rename Columns #}
