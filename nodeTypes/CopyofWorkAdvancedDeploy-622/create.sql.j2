@@ -68,23 +68,23 @@ does not permit copying or modification for any other purpose.
 
         CREATE OR REPLACE VIEW {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
         (
-            {% for col in desiredState.columns %}
+            {%- for col in desiredState.columns %}
                 "{{ col.name }}"
                 {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-                {%- if not loop.last -%}, {% endif %}
-            {% endfor %}
+                {%- if not loop.last -%}, {% endif -%}
+            {%- endfor %}
         )
         {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
         AS
-        {% for source in desiredState.sources %}
+        {%- for source in desiredState.sources %}
             SELECT
-            {% if desiredState.config.selectDistinct %}
+            {%- if desiredState.config.selectDistinct %}
               DISTINCT
-            {% endif %}
-            {% for col in source.columns %}
+            {%- endif %}
+            {%- for col in source.columns %}
                 {{ get_source_transform(col) }} AS "{{ col.name }}"
-                {%- if not loop.last -%}, {% endif %}
-            {% endfor %}
+                {%- if not loop.last -%}, {% endif -%}
+            {%- endfor %}
 
             {{ source.join }}
             {% if desiredState.config.groupByAll %}
@@ -147,14 +147,14 @@ does not permit copying or modification for any other purpose.
                 {{ stage('Create Work '+ ' {{desiredState.node.materializationType}}' ) }}
                CREATE OR REPLACE {{desiredState.node.materializationType}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                 (
-                {% for col in desiredState.columns %}
+                {%- for col in desiredState.columns %}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
-                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
-                    {% endif %}
-                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-                    {%- if not loop.last -%}, {% endif %}
-                {% endfor %}
+                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif -%}
+                    {%- endif -%}
+                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+                    {%- if not loop.last -%}, {% endif -%}
+                {%- endfor %}
                 )
                {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
 
@@ -173,14 +173,14 @@ does not permit copying or modification for any other purpose.
             {{ stage('Create Work '+ ' {{desiredState.node.materializationType}}' ) }}
             CREATE OR REPLACE {{desiredState.node.materializationType}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
             (
-                {% for col in desiredState.columns %}
+                {%- for col in desiredState.columns %}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
-                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
-                    {% endif %}
-                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-                    {%- if not loop.last -%}, {% endif %}
-                {% endfor %}
+                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif -%}
+                    {%- endif -%}
+                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+                    {%- if not loop.last -%}, {% endif -%}
+                {%- endfor %}
             )
             {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
 
@@ -618,53 +618,53 @@ does not permit copying or modification for any other purpose.
 
             {# Drop Columns #}
             {% set nsVariables = namespace(colchanges=0) %}
-            {% for dropCurCol in currentState.columns %}
-                {% if dropCurCol.id not in desiredState.columns | map(attribute="id") %}
+            {%- for dropCurCol in currentState.columns %}
+                {%- if dropCurCol.id not in desiredState.columns | map(attribute="id") %}
                 {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
 
-                    {% if nsVariables.colchanges == 1 %}
+                    {%- if nsVariables.colchanges == 1 %}
                         {{ stage('Drop Columns') }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         DROP COLUMN 
-                    {% else %}
+                    {%- else %}
                         , 
-                    {% endif %}
+                    {%- endif -%}
                     "{{ dropCurCol.name }}"
 
                     {# Metadata changes detected #}
                     {% set nsMetaVariables.metaDataChanged = true %} 
-                {% endif %}
-            {% endfor %}
+                {%- endif %}
+            {%- endfor %}
 
             {# Add Columns #}
             {% set nsVariables = namespace(colchanges=0) %}
-            {% for addDesCol in desiredState.columns %}
-                {% if addDesCol.id not in currentState.columns | map(attribute="id") %}
+            {%- for addDesCol in desiredState.columns %}
+                {%- if addDesCol.id not in currentState.columns | map(attribute="id") %}
                 {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
 
-                    {% if nsVariables.colchanges == 1 %}
+                    {%- if nsVariables.colchanges == 1 %}
                         {{ stage('Add Columns') }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         ADD COLUMN
-                    {% else %}
+                    {%- else %}
                         ,
-                    {% endif %}
+                    {% endif -%}
                         "{{ addDesCol.name }}" {{ addDesCol.dataType }}
                         {%- if not addDesCol.nullable %} NOT NULL
-                            {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{% endif %}
+                            {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{%- endif -%}
                         {% endif %}
-                        {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDesCol.description | escape }}'{% endif %}
+                        {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDesCol.description | escape }}'{% endif -%}
 
                         {# Metadata changes detected #}
                         {% set nsMetaVariables.metaDataChanged = true %} 
-                {% endif %}
-            {% endfor %}
+                {%- endif -%}
+            {%- endfor %}
 
             {# Rename Columns #}
-            {% for renameCurCol in currentState.columns %}
-                {% if renameCurCol.id in desiredState.columns | map(attribute="id") %}
+            {%- for renameCurCol in currentState.columns %}
+                {%- if renameCurCol.id in desiredState.columns | map(attribute="id") %}
                     {% set desiredColumnName = desiredState.columns | selectattr('id', 'equalto', renameCurCol.id) | map(attribute='name') | first %}
-                    {% if renameCurCol.name != desiredColumnName %}
+                    {%- if renameCurCol.name != desiredColumnName %}
                         {{ stage('Rename Column ' + renameCurCol.name) }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         RENAME COLUMN "{{ renameCurCol.name }}"
@@ -673,8 +673,8 @@ does not permit copying or modification for any other purpose.
                         {# Metadata changes detected #}
                         {% set nsMetaVariables.metaDataChanged = true %} 
                     {% endif %}
-                {% endif %}
-            {% endfor %}
+                {%- endif -%}
+            {%- endfor %}
 
             {# Change data types etc #}
             {% set nsVariables.colchanges = 0 %}
@@ -706,13 +706,13 @@ does not permit copying or modification for any other purpose.
                             {{ stage('Change Column Attributes') }}
                             ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                             MODIFY
-                        {% endif %}
+                        {%- endif %}
                         {% if datatypeTest == false %}
-                            {% if nsVariables.colchanges > 1 %},{% endif %}
+                            {% if nsVariables.colchanges > 1 %},{%- endif %}
                             COLUMN "{{ desiredColumnName }}"
                             SET DATA TYPE {{ desiredDatatype }}
                             {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-                        {% endif %}
+                        {%- endif %}
                         {% if nullableTest == false %}
                             {% if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
