@@ -150,6 +150,66 @@ operation:
               - columnCounter: b609159a-65cf-467b-bbf1-c7b987a46ffc
                 stepCounter: 731a2d84-fde4-48fc-b05a-8bcc016d8510
             transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 786cbd4d-ffc6-409a-a7fd-c6e2d3b5a72a
+          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        config: {}
+        dataType: VARCHAR(10)
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test1
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: ""
+        systemColumnType: None
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8c6df0eb-dc0d-49ec-b3d6-2c4f630b0985
+          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        config: {}
+        dataType: VARCHAR(10)
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test2
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: ""
+        systemColumnType: None
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: d6673bea-9b8e-419b-bf2f-8746b8d60135
+          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        config: {}
+        dataType: VARCHAR(10)
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test3
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: ""
+        systemColumnType: None
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
