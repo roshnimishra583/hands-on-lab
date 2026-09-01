@@ -15,11 +15,11 @@ operation:
       items:
         - columnName:
             columnCounter: 7984fbc1-4c45-4ef1-a98c-7302ec73e0b9
-            name: C_NATIONKEY
+            name: Cust_NATIONKEY
             stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         - columnName:
-            columnCounter: fc5f900a-85f1-4b7e-a663-e4c28089b95b
-            name: C_ADDRESS
+            columnCounter: 58e5002d-e4ef-4515-88a6-4921a8ea26a4
+            name: Cust_PHONE
             stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
     clusterKeyConfigExpressions:
       items:
@@ -82,10 +82,10 @@ operation:
           columnCounter: fc5f900a-85f1-4b7e-a663-e4c28089b95b
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
-        dataType: VARCHAR(40)
+        dataType: VARCHAR(50)
         description: ""
-        name: C_ADDRESS
-        nullable: false
+        name: Cust_ADDRESS
+        nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 3b55e889-980b-466b-9609-6775de716058
@@ -98,7 +98,7 @@ operation:
         config: {}
         dataType: NUMBER(38,0)
         description: ""
-        name: C_NATIONKEY
+        name: Cust_NATIONKEY
         nullable: false
         sourceColumnReferences:
           - columnReferences:
@@ -110,9 +110,9 @@ operation:
           columnCounter: 58e5002d-e4ef-4515-88a6-4921a8ea26a4
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
-        dataType: VARCHAR(25)
+        dataType: VARCHAR(35)
         description: ""
-        name: C_PHONE
+        name: Cust_PHONE
         nullable: false
         sourceColumnReferences:
           - columnReferences:
@@ -125,7 +125,7 @@ operation:
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
         dataType: VARCHAR(200)
-        description: Test column
+        description: ""
         name: Cust_COMMENT
         nullable: true
         sourceColumnReferences:
@@ -138,14 +138,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 47969275-8947-464d-8477-561d00fa21d2
+          columnCounter: 73d0b865-ca9b-4475-b6ee-68dca6e7ec1b
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
         dataType: VARCHAR
         defaultValue: ""
-        description: test comment2
+        description: TEST
         keyColumnType: None
-        name: Test_col
+        name: Cust_test
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -158,14 +158,34 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: afab50de-89f5-4652-aabe-0479998b4b73
+          columnCounter: a1627dc4-99e2-4c5c-8a6a-f73f79f9dbb3
+          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: TEST2
+        keyColumnType: None
+        name: Cust_test1
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
+        systemColumnType: None
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4b524079-4f45-4ad1-9a96-f38eb2e094f4
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
         dataType: VARCHAR
         defaultValue: ""
         description: ""
         keyColumnType: None
-        name: Test_col2
+        name: Cust_test2
         nullable: true
         sourceColumnReferences:
           - columnReferences:
