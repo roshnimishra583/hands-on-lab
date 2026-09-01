@@ -2,8 +2,8 @@ fileVersion: 1
 id: "306"
 mappingDefinitions:
   SRC:
-    database: SNOWFLAKE_SAMPLE_DATA
-    schema: TPCH_SF1
+    database: SOURCE
+    schema: SRC
   TARGET:
     database: SNOWFLAKE_LEARNING_DB
     schema: TARGET_QA

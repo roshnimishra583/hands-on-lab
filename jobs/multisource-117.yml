@@ -1,0 +1,6 @@
+excludeSelector: ""
+fileVersion: 1
+id: "117"
+includeSelector: "{ location: \"SRC\" name: \"CUSTOMER1\" } OR { location: \"SRC\" name: \"CUSTOMER2\" } OR { location: \"SRC\" name: \"CUSTOMER3\" } OR { location: \"TARGET\" name: \"WRK_CUSTOMER1\" }"
+name: multisource
+type: Job

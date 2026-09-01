@@ -1,6 +1,6 @@
 fileVersion: 1
-id: 069ff0c6-f49b-4108-88f3-4ecf6f362359
-name: TIME_DIM
+id: cb5e6f3e-a646-457e-b0a4-851e63eea57d
+name: CUSTOMER1
 operation:
   database: ""
   deployEnabled: true
@@ -13,33 +13,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 49426c31-7593-4c06-9927-02b89b7277a8
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+          columnCounter: 6ccc2935-abbb-4538-99fc-7fd678536718
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
         config: {}
         dataType: NUMBER(38,0)
         defaultValue: ""
         description: ""
-        name: T_TIME_SK
-        nullable: false
-        primaryKey: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-        transform: ""
-        uniqueKey: false
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 14e4a5b9-6867-4049-833f-f19b69b13a26
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
-        config: {}
-        dataType: VARCHAR(16)
-        defaultValue: ""
-        description: ""
-        name: T_TIME_ID
-        nullable: false
+        name: C_CUSTKEY
+        nullable: true
         primaryKey: false
         sourceColumnReferences:
           - columnReferences: []
@@ -51,13 +32,51 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 1ce94820-ea69-4f97-bc5e-cca60e0d7f8f
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+          columnCounter: 73664a96-666a-4d2e-99ad-ad8363d05de3
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
+        config: {}
+        dataType: VARCHAR(25)
+        defaultValue: ""
+        description: ""
+        name: C_NAME
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 98442814-b44d-4459-aaeb-02de0542dbe7
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
+        config: {}
+        dataType: VARCHAR(40)
+        defaultValue: ""
+        description: ""
+        name: C_ADDRESS
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4965dd35-c918-438a-97cb-17722355768a
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
         config: {}
         dataType: NUMBER(38,0)
         defaultValue: ""
         description: ""
-        name: T_TIME
+        name: C_NATIONKEY
         nullable: true
         primaryKey: false
         sourceColumnReferences:
@@ -70,13 +89,13 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 4598cfad-e610-4451-8716-acfa244e1c7c
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+          columnCounter: 44d2cd60-b1ac-4be1-a7d1-fffa5bc0de24
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
         config: {}
-        dataType: NUMBER(38,0)
+        dataType: VARCHAR(15)
         defaultValue: ""
         description: ""
-        name: T_HOUR
+        name: C_PHONE
         nullable: true
         primaryKey: false
         sourceColumnReferences:
@@ -89,13 +108,13 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: e2047d06-81e2-47b0-9921-eb0454c14668
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+          columnCounter: e19dcf3a-2333-463f-8b6d-ae2a44ec5284
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
         config: {}
-        dataType: NUMBER(38,0)
+        dataType: NUMBER(12,2)
         defaultValue: ""
         description: ""
-        name: T_MINUTE
+        name: C_ACCTBAL
         nullable: true
         primaryKey: false
         sourceColumnReferences:
@@ -108,13 +127,13 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 12e98d13-d7af-4da1-bd57-da140b83f180
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+          columnCounter: 04c0c4a1-09af-4706-9415-59542937fb57
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
         config: {}
-        dataType: NUMBER(38,0)
+        dataType: VARCHAR(10)
         defaultValue: ""
         description: ""
-        name: T_SECOND
+        name: C_MKTSEGMENT
         nullable: true
         primaryKey: false
         sourceColumnReferences:
@@ -127,13 +146,13 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 04eca960-44d9-4eca-ba1e-832d3f9b8f4c
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
+          columnCounter: 78bdb948-bc5b-437e-8d59-2dcafda0a82c
+          stepCounter: cb5e6f3e-a646-457e-b0a4-851e63eea57d
         config: {}
-        dataType: VARCHAR(2)
+        dataType: VARCHAR(117)
         defaultValue: ""
         description: ""
-        name: T_AM_PM
+        name: C_COMMENT
         nullable: true
         primaryKey: false
         sourceColumnReferences:
@@ -141,64 +160,7 @@ operation:
             transform: ""
         transform: ""
         uniqueKey: false
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: e3d9411a-3bf9-47c6-be8d-3f76238d9699
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
-        config: {}
-        dataType: VARCHAR(20)
-        defaultValue: ""
-        description: ""
-        name: T_SHIFT
-        nullable: true
-        primaryKey: false
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-        transform: ""
-        uniqueKey: false
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: d92bc2b7-b744-4fb7-9b11-f3060a480662
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
-        config: {}
-        dataType: VARCHAR(20)
-        defaultValue: ""
-        description: ""
-        name: T_SUB_SHIFT
-        nullable: true
-        primaryKey: false
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-        transform: ""
-        uniqueKey: false
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: cefa55a7-fc9f-42ec-865b-9d721c49f819
-          stepCounter: 069ff0c6-f49b-4108-88f3-4ecf6f362359
-        config: {}
-        dataType: VARCHAR(20)
-        defaultValue: ""
-        description: ""
-        name: T_MEAL_TIME
-        nullable: true
-        primaryKey: false
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-        transform: ""
-        uniqueKey: false
-  name: TIME_DIM
+  name: CUSTOMER1
   schema: ""
   sqlType: Source
   type: sourceInput
