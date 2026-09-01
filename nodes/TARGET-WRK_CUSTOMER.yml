@@ -14,12 +14,12 @@ operation:
     clusterKeyConfig:
       items:
         - columnName:
-            columnCounter: 7984fbc1-4c45-4ef1-a98c-7302ec73e0b9
-            name: Cust_NATIONKEY
+            columnCounter: fc5f900a-85f1-4b7e-a663-e4c28089b95b
+            name: C_ADDRESS
             stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         - columnName:
-            columnCounter: 58e5002d-e4ef-4515-88a6-4921a8ea26a4
-            name: Cust_PHONE
+            columnCounter: 3e017334-5c0e-45b3-888e-4cbc34a5dae0
+            name: C_CUSTKEY
             stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
     clusterKeyConfigExpressions:
       items:
