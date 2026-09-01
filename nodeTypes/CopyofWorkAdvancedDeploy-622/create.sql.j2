@@ -702,38 +702,38 @@ does not permit copying or modification for any other purpose.
                             {{ stage('Change Column Attributes') }}
                             ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                             MODIFY
-                        {%- endif %}
-                        {% if datatypeTest == false %}
-                            {% if nsVariables.colchanges > 1 %},{%- endif %}
+                        {%- endif -%}
+                        {%- if datatypeTest == false %}
+                            {%- if nsVariables.colchanges > 1 %},{%- endif %}
                             COLUMN "{{ desiredColumnName }}"
                             SET DATA TYPE {{ desiredDatatype }}
-                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
                         {%- endif %}
-                        {% if nullableTest == false %}
-                            {% if nsVariables.colchanges > 1 %},{% endif %}
+                        {%- if nullableTest == false %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
-                            {% if currentNullable == true %}
+                            {%- if currentNullable == true %}
                                 SET
-                            {% else %}
+                            {%- else %}
                                 DROP
-                            {% endif %}
+                            {%- endif %}
                             NOT NULL
-                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
                         {% endif %}
-                        {% if descriptionTest == false %}
-                            {% if nsVariables.colchanges > 1 %},{% endif %}
+                        {%- if descriptionTest == false %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
                             COMMENT '{{ desiredDescription |escape }}'
-                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
                         {% endif %}
-                        {% if defaultValueTest == false %}
-                            {% if nsVariables.colchanges > 1 %},{% endif %}
+                        {%- if defaultValueTest == false %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
-                            {% if desiredDefaultValue == '' %}
+                            {%- if desiredDefaultValue == '' %}
                                 DROP DEFAULT
-                            {% else %}
+                            {%- else %}
                                 SET DEFAULT {{ desiredDefaultValue }}
-                            {% endif %}
+                            {%- endif %}
                             {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
                         {% endif %}
 
