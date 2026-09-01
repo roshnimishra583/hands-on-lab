@@ -10,7 +10,7 @@ operation:
     asofJoinMain: false
     asofJoinON: false
     asofJoinUSING: false
-    clusterKey: false
+    clusterKey: true
     clusterKeyConfig:
       items:
         - columnName:
@@ -19,9 +19,13 @@ operation:
             stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
     clusterKeyConfigExpressions:
       items:
-        - {}
+        - columnNameExpressions:
+            columnCounter: 7984fbc1-4c45-4ef1-a98c-7302ec73e0b9
+            name: C_NATIONKEY
+            stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+          sqlExpression: ex. trunc(<column_name>, -5)
     clusterKeyExpressions: false
-    groupByAll: false
+    groupByAll: true
     insertStrategy: INSERT
     orderby: false
     orderbycolumn:
@@ -127,32 +131,38 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 8494adfa-9714-43be-9e08-ba52af8fc90d
-          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
-        config: {}
-        dataType: VARCHAR(10)
-        description: ""
-        name: C_MKTSEGMENT
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 362f6078-bff6-4845-bbe4-be966e7b4e6a
-                stepCounter: 731a2d84-fde4-48fc-b05a-8bcc016d8510
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
           columnCounter: fcac4c55-a0ba-48fd-afbb-c40b63609e99
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
-        dataType: VARCHAR(117)
-        description: ""
-        name: C_COMMENT
+        dataType: VARCHAR(200)
+        description: Test column
+        name: Cust_COMMENT
         nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: b609159a-65cf-467b-bbf1-c7b987a46ffc
                 stepCounter: 731a2d84-fde4-48fc-b05a-8bcc016d8510
             transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 47969275-8947-464d-8477-561d00fa21d2
+          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test_col
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
+        systemColumnType: None
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
