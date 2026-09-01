@@ -43,7 +43,7 @@ does not permit copying or modification for any other purpose.
 	
 {# == Multi-Source option  == #}
 	
-		{%- if insertStrategy in ['UNION', 'UNION ALL'] %}
+		{%- if insertStrategy in ['UNION', 'UNION ALL'] -%}
 			{{ stage( insertStrategy + ' Sources' | string ) }}
 			INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
 				(
@@ -52,7 +52,7 @@ does not permit copying or modification for any other purpose.
 						{%- if not loop.last -%},{% endif %}
 					{%- endfor %}
 				)
-		{%- endif %}
+		{%- endif -%}
 	
 	
 		{% for source in sources %}

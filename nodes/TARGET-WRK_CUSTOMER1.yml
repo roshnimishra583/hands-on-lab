@@ -19,7 +19,7 @@ operation:
         - {}
     clusterKeyExpressions: false
     groupByAll: false
-    insertStrategy: INSERT
+    insertStrategy: UNION ALL
     orderby: false
     orderbycolumn:
       items:
