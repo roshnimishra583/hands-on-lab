@@ -84,7 +84,7 @@ operation:
         config: {}
         dataType: VARCHAR(50)
         description: ""
-        name: Cust_ADDRESS
+        name: C_ADDRESS
         nullable: true
         sourceColumnReferences:
           - columnReferences:
