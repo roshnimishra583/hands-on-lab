@@ -110,7 +110,7 @@ operation:
           columnCounter: 58e5002d-e4ef-4515-88a6-4921a8ea26a4
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
-        dataType: VARCHAR(15)
+        dataType: VARCHAR(25)
         description: ""
         name: C_PHONE
         nullable: false
