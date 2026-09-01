@@ -19,15 +19,24 @@ operation:
         - {}
     clusterKeyExpressions: false
     groupByAll: false
-    insertStrategy: UNION
+    insertStrategy: INSERT
     orderby: false
     orderbycolumn:
       items:
         - {}
     postSQL: |-
-      SELECT COUNT(*) AS ROW_COUNT
-      FROM {{ ref_no_link('TARGET', 'WRK_CUSTOMER1') }}
-    preSQL: SELECT 'PRE-SQL WORKING' AS TEST_MESSAGE;
+      SELECT
+          COUNT(*) AS ROW_COUNT,
+          COUNT("C_CUSTKEY") AS CUSTKEY_COUNT,
+          COUNT(DISTINCT "C_CUSTKEY") AS DISTINCT_CUSTKEY_COUNT
+      FROM {{ ref('TARGET', 'WRK_CUSTOMER1') }};
+    preSQL: |-
+      SELECT
+          "C_CUSTKEY",
+          "C_NAME",
+          "C_MKTSEGMENT"
+      FROM {{ ref('TARGET', 'WRK_CUSTOMER1') }}
+      LIMIT 5;
     selectDistinct: false
     testsEnabled: false
     truncateBefore: true
