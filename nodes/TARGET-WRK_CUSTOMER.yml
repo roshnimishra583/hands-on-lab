@@ -10,17 +10,9 @@ operation:
     asofJoinMain: false
     asofJoinON: false
     asofJoinUSING: false
-    clusterKey: true
+    clusterKey: false
     clusterKeyConfig:
-      items:
-        - columnName:
-            columnCounter: fc5f900a-85f1-4b7e-a663-e4c28089b95b
-            name: C_ADDRESS
-            stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
-        - columnName:
-            columnCounter: 3e017334-5c0e-45b3-888e-4cbc34a5dae0
-            name: C_CUSTKEY
-            stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+      items: []
     clusterKeyConfigExpressions:
       items:
         - columnNameExpressions:
