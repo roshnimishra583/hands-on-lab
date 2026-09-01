@@ -17,6 +17,10 @@ operation:
             columnCounter: 7984fbc1-4c45-4ef1-a98c-7302ec73e0b9
             name: C_NATIONKEY
             stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        - columnName:
+            columnCounter: fc5f900a-85f1-4b7e-a663-e4c28089b95b
+            name: C_ADDRESS
+            stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
     clusterKeyConfigExpressions:
       items:
         - columnNameExpressions:
@@ -66,7 +70,7 @@ operation:
         config: {}
         dataType: VARCHAR(25)
         description: ""
-        name: C_NAME
+        name: Cust_NAME
         nullable: false
         sourceColumnReferences:
           - columnReferences:
@@ -117,20 +121,6 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7a766529-e021-4d2e-bfe8-42d40911b034
-          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
-        config: {}
-        dataType: NUMBER(12,2)
-        description: ""
-        name: C_ACCTBAL
-        nullable: false
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: b826d4dd-3c10-4e66-a4bd-1e63afcb9dbd
-                stepCounter: 731a2d84-fde4-48fc-b05a-8bcc016d8510
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
           columnCounter: fcac4c55-a0ba-48fd-afbb-c40b63609e99
           stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
         config: {}
@@ -156,6 +146,26 @@ operation:
         description: ""
         keyColumnType: None
         name: Test_col
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
+        systemColumnType: None
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: afab50de-89f5-4652-aabe-0479998b4b73
+          stepCounter: 3e2636b3-8f88-4371-8267-6eacb5823908
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test_col2
         nullable: true
         sourceColumnReferences:
           - columnReferences:
