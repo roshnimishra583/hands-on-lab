@@ -106,7 +106,7 @@ operation:
           stepCounter: 8fbedc64-7634-4f48-9ea0-dbdb6bcc8d56
         config: {}
         dataType: VARCHAR(200)
-        description: This is test description
+        description: ""
         name: itemDesc
         nullable: true
         sourceColumnReferences:
