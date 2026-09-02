@@ -106,7 +106,7 @@ operation:
           stepCounter: 52b6cc39-ebb2-4062-8553-550710d581d5
         config: {}
         dataType: VARCHAR(200)
-        description: Test desc
+        description: this is test
         name: i_Item_Desc
         nullable: true
         sourceColumnReferences:
