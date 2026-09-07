@@ -108,7 +108,7 @@ operation:
           stepCounter: e49a1486-6b0b-46db-8bfe-454ff437a118
         config: {}
         dataType: VARCHAR(1)
-        description: ""
+        description: Test description
         name: O_ORDERSTATUS
         nullable: true
         sourceColumnReferences:
@@ -137,7 +137,7 @@ operation:
         config: {}
         dataType: DATE
         description: ""
-        name: O_ORDERDATE
+        name: ORD_ORDERDATE
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -163,7 +163,7 @@ operation:
           columnCounter: 74200981-4891-429f-b98b-8927a7f2439e
           stepCounter: e49a1486-6b0b-46db-8bfe-454ff437a118
         config: {}
-        dataType: VARCHAR(15)
+        dataType: VARCHAR(25)
         description: ""
         name: O_CLERK
         nullable: true
@@ -177,40 +177,40 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: c6518e67-d8d2-4509-92e4-8267dc31b523
+          columnCounter: 4b77c3d2-82a7-4bab-bed6-e64cd9909a20
           stepCounter: e49a1486-6b0b-46db-8bfe-454ff437a118
         config: {}
-        dataType: NUMBER(38,0)
+        dataType: VARCHAR
         defaultValue: ""
         description: ""
         keyColumnType: None
-        name: O_SHIPPRIORITY
+        name: T_COLUMN
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 71cfe74c-2bdf-4ce0-87b1-7a8118399312
-                stepCounter: 12b18c96-1bec-4c18-b78b-6256f2f587b7
-            transform: ""
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
         systemColumnType: None
       - acceptedValues:
           strictMatch: true
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: cf56597b-030e-43af-ac31-6ae29455b72d
+          columnCounter: 4801ddd2-99b1-4070-99e2-f5f03ee4164d
           stepCounter: e49a1486-6b0b-46db-8bfe-454ff437a118
         config: {}
-        dataType: VARCHAR(79)
+        dataType: VARCHAR
         defaultValue: ""
         description: ""
         keyColumnType: None
-        name: O_COMMENT
+        name: T_COLUMN_2
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: cdcc8a6f-993e-4d9f-96f2-7d34fcf5ff77
-                stepCounter: 12b18c96-1bec-4c18-b78b-6256f2f587b7
-            transform: ""
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
         systemColumnType: None
       - acceptedValues:
           strictMatch: true
