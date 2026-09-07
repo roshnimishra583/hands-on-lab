@@ -110,12 +110,12 @@ does not permit copying or modification for any other purpose.
             (SELECT  
                     {% for id in tableColumnIds %}
 
-                        {% set columnTransformation = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='transform') | first -%}
+                        {%- set columnTransformation = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='transform') | first -%}
                         {%- if columnTransformation == "" -%}
-                        {% set col =  sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='sourceColumns') | first  |  map(attribute='column')  | list |  map(attribute='name') | first   -%}
+                        {%- set col =  sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='sourceColumns') | first  |  map(attribute='column')  | list |  map(attribute='name') | first   -%}
                         "{{ col }}" as "{{ col }}" {%- if not loop.last -%}, {%- endif -%}
                         {%- else -%}
-                        {% set col = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='name') | first -%}
+                        {%- set col = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='name') | first -%}
                         {{ columnTransformation | replace(ns.sourceTableName, streamName) }} as "{{ col }}" {%- if not loop.last -%}, {%- endif -%}
                         {%- endif %}
                     {%- endfor %}
@@ -125,8 +125,8 @@ does not permit copying or modification for any other purpose.
             WHERE METADATA$ACTION = 'DELETE'
             AND   METADATA$ISUPDATE = FALSE
 
-            {% set join_clause = ret_clause.lstrip() | replace("AND ", "WHERE ", 1) if ret_clause.lstrip().startswith("AND ") else ret_clause %}
-            {% if join_clause.strip() != "" %}
+            {%- set join_clause = ret_clause.lstrip() | replace("AND ", "WHERE ", 1) if ret_clause.lstrip().startswith("AND ") else ret_clause -%}
+            {%- if join_clause.strip() != "" %}
                 AND ({{ join_clause }})
             {% endif %}
             QUALIFY {{ nsVariables.rowNumber }} = 1
@@ -136,7 +136,7 @@ does not permit copying or modification for any other purpose.
             -- Join Condition
             ON {% for col in nsVariables.tableKey -%}
                 src."{{ col }}" = tgt."{{ col }}"
-            {% if not loop.last %} AND {% endif %}
+            {%- if not loop.last %} AND {% endif %}
                 {%- endfor -%}
 
             -- Handle all DELETE operations (standalone deletes and DELETE portion of updates)
@@ -149,12 +149,12 @@ does not permit copying or modification for any other purpose.
             (SELECT  
                     {% for id in tableColumnIds %}
 
-                        {% set columnTransformation = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='transform') | first -%}
+                        {%- set columnTransformation = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='transform') | first -%}
                         {%- if columnTransformation == "" -%}
-                        {% set col =  sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='sourceColumns') | first  |  map(attribute='column')  | list |  map(attribute='name') | first   -%}
+                        {%- set col =  sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='sourceColumns') | first  |  map(attribute='column')  | list |  map(attribute='name') | first   -%}
                         "{{ col }}" as "{{ col }}" {%- if not loop.last -%}, {%- endif -%}
                         {%- else -%}
-                        {% set col = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='name') | first -%}
+                        {%- set col = sources[0].columns | selectattr('id', 'equalto', id) | map(attribute='name') | first -%}
                         {{ columnTransformation | replace(ns.sourceTableName, streamName) }} as "{{ col }}" {%- if not loop.last -%}, {%- endif -%}
                         {%- endif %}
                     {%- endfor %}
@@ -163,7 +163,7 @@ does not permit copying or modification for any other purpose.
             FROM {{ ref(streamTargetLocationName, streamName) }}
             WHERE METADATA$ACTION = 'INSERT'
 
-            {% if join_clause.strip() != "" %}
+            {%- if join_clause.strip() != "" %}
                 AND ({{ join_clause }})
             {% endif %}
             QUALIFY {{ nsVariables.rowNumber }} = 1
@@ -173,16 +173,16 @@ does not permit copying or modification for any other purpose.
             -- Join Condition
             ON {% for col in nsVariables.tableKey -%}
                 src."{{ col }}" = tgt."{{ col }}"
-            {% if not loop.last %} AND {% endif %}
+            {%- if not loop.last %} AND {% endif %}
                 {%- endfor -%}
 
             -- What to do if data is matched based on table key
             WHEN MATCHED AND METADATA$ACTION = 'INSERT' AND METADATA$ISUPDATE = 'TRUE' THEN UPDATE SET 
                 {%- for col in columns %}
-                    {% if not (col.isBusinessKey or col.isSystemCreateDate)%}
+                    {%- if not (col.isBusinessKey or col.isSystemCreateDate)%}
                         tgt."{{ col.name }}" = src."{{ col.name }}"
                         {%- if not loop.last -%}, {%- endif %}
-                    {% endif %}
+                    {%- endif %}
                 {%- endfor %}
             -- What to do with new records based on table key
             WHEN NOT MATCHED AND METADATA$ACTION = 'INSERT' AND METADATA$ISUPDATE = 'FALSE' THEN INSERT 
@@ -190,12 +190,12 @@ does not permit copying or modification for any other purpose.
                 {%- for col in columns -%}
                     "{{ col.name }}"
                     {%- if not loop.last -%}, {% endif %}
-                {% endfor %}) 
+                {%- endfor %}) 
             VALUES (
                 {%- for col in columns -%}
                     src."{{ col.name }}"
                     {%- if not loop.last -%}, {% endif %}
-                {% endfor %});
+                {%- endfor %});
         COMMIT;
         EXCEPTION
         WHEN OTHER THEN
