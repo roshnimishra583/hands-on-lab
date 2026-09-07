@@ -1,0 +1,391 @@
+fileVersion: 1
+id: "627"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |
+    capitalized: Copy of Dynamic Table Dimension
+    short: DT_DIM
+    tagColor: "#E5FA31"
+    isDisabled: true
+    plural: Dynamic Tables
+
+    deployStrategy: advanced
+
+    config:
+      - groupName: Dynamic Table Options
+        items: 
+        - type: label
+          attributeName: note2
+          displayName: 
+                       "NOTE:
+                       \n
+                       Ensure the parameter targetDynamicTableWarehouse is    added in Workspace and 
+                       deployment environment  for successful creation of dynamic table.  
+                       Refer documentation for more info"
+          enableIf: "{%- if parameters == {} or parameters.targetDynamicTableWarehouse == '' or not config.advanceWarehouse -%} true {%- else -%} false {%- endif -%}"
+
+        - displayName: Warehouse on which to execute Dynamic Table
+          attributeName: warehouseName
+          type: textBox
+          default: dev_wh_xs
+          isRequired: true
+          enableIf: "{% if config.advanceWarehouse %} false {% else %} true {% endif %}"
+
+        - displayName: Advanced Warehouse Selection
+          attributeName: advanceWarehouse
+          type: toggleButton
+          default: false
+          isRequired: false
+
+        - type: label
+          attributeName: note3
+          displayName: 
+                       "NOTE:
+                       \n
+                       Ensure that all the parameters required for Advance Warehouse are added in
+                       Workspace and deployment environment  for successful creation of dynamic table.  
+                       Refer documentation for more info"
+          enableIf: "{% if config.advanceWarehouse %} true {% else %} false {% endif %}"
+
+        - displayName: Refresh Warehouse Size
+          attributeName: refreshWarehouseSize
+          type: dropdownSelector
+          default: ""
+          options:
+          - ""   
+          - X-Small
+          - Small
+          - Medium
+          - Large
+          - X-Large
+          - 2X-Large
+          - 3x-Large
+          - 4x-Large
+          - 5x-Large
+          - 6x-Large
+          enableIf: "{% if config.advanceWarehouse %} true {% else %} false {% endif %}"
+
+
+        - displayName: Initialization Warehouse Size
+          attributeName: initializeWarehouseSize
+          type: dropdownSelector
+          default: ""
+          options:
+          - ""   
+          - X-Small
+          - Small
+          - Medium
+          - Large
+          - X-Large
+          - 2X-Large
+          - 3x-Large
+          - 4x-Large
+          - 5x-Large
+          - 6x-Large
+          enableIf: "{% if config.advanceWarehouse %} true {% else %} false {% endif %}"
+
+        - type: toggleButton
+          attributeName: downstreamOption
+          displayName: Downstream
+          default: false
+          isRequired: true
+
+        - type: tabular
+          displayName: 'Lag Specification'
+          attributeName: lagSpecification
+          columns:
+      
+          -  type: textBox
+             displayName: Time Value
+             attributeName: lagValue
+             default: 60
+             isRequired: false
+             enableIf: "{% if config.downstreamOption %} false {% else %} true {% endif %}"
+        
+          -  type: dropdownSelector
+             displayName: Time Period
+             attributeName: lagPeriod
+             default: "Minutes"
+             options:
+             - Seconds
+             - Minutes
+             - Hours
+             - Days
+             isRequired: false
+             enableIf: "{% if config.downstreamOption %} false {% else %} true {% endif %}"
+        
+          isRequired: false
+          enableIf: "{% if config.downstreamOption %} false {% else %} true {% endif %}"
+
+        - type: dropdownSelector
+          displayName: Refresh Mode
+          attributeName: refresh_mode
+          default: "AUTO"
+          options:
+          - ''
+          - AUTO
+          - INCREMENTAL
+          - FULL
+          isRequired: false
+
+        - type: dropdownSelector   
+          displayName: Initialize
+          attributeName: initialize
+          default: "ON_CREATE"
+          options:
+          - ''
+          - ON_CREATE
+          - ON_SCHEDULE 
+          isRequired: false
+      
+      - groupName: Advanced Options
+        items:
+
+        - type: toggleButton
+          displayName: Copy grants
+          attributeName: cpygrants
+          default: false
+
+        - type: toggleButton
+          displayName: Immutability Constraint
+          attributeName: immutabilityConstraint
+          default: false
+
+        - type: textBox
+          displayName: Immutable Where Expression(Eg- column_name < CURRENT_TIMESTAMP() - INTERVAL '7 days')
+          attributeName: immutableExpression
+          default: ""
+          enableIf: "{% if config.immutabilityConstraint %} true {% else %} false {% endif %}"
+
+        - type: toggleButton
+          displayName: Enable Backfill
+          attributeName: backfill
+          default: false
+          enableIf: "{% if config.immutabilityConstraint %} true {% else %} false {% endif %}"
+
+      - groupName: Backfill Options
+        items:
+
+        - type: textBox
+          displayName: Backfill Source Schema
+          attributeName: backfillSourceSchema
+          default: ""
+          enableIf: "{% if config.backfill %} true {% else %} false {% endif %}"
+
+        - type: textBox
+          displayName: Backfill Source Table
+          attributeName:  backfillSource
+          default: ""
+          enableIf: "{% if config.backfill %} true {% else %} false {% endif %}"
+          
+        - type: toggleButton
+          displayName: Use Time Travel
+          attributeName: timeTravel
+          default: false
+          enableIf: "{% if config.backfill %} true {% else %} false {% endif %}"
+
+        - type: dropdownSelector
+          displayName: Time Travel Type
+          attributeName: timeTraveltype
+          default: ""
+          options: 
+          - AT
+          - BEFORE
+          enableIf: "{% if config.timeTravel %} true {% else %} false {% endif %}"
+
+        - type: dropdownSelector
+          displayName: Time Travel Reference
+          attributeName: timeTravelreference
+          default: ""
+          options:
+          - OFFSET
+          - STATEMENT
+          # - TIMESTAMP - Not supported for now.
+          enableIf: "{% if config.timeTravel %} true {% else %} false {% endif %}"
+          
+        - type: textBox
+          displayName: Time Travel Value
+          attributeName: timeTravelvalue
+          default: ""
+          enableIf: "{% if config.timeTravel %} true {% else %} false {% endif %}"
+
+        enableIf: "{% if config.backfill and config.immutabilityConstraint %} true {% else %} false {% endif %}"
+
+      - groupName: Dimension Options
+        items:
+        - type: tabular
+          displayName: 'Table Key(s)'
+          attributeName: partitionBy
+          columns:
+      
+          -  type: columnDropdownSelector
+             displayName: Column Name
+             attributeName: partColName
+             isRequired: true
+            
+          isRequired: true
+
+        - displayName: Record Versioning
+          attributeName: recordVersioning
+          type: dropdownSelector
+          default: Datetime Column
+          options:
+            - Datetime Column
+            - Date Column and Time Column
+            - Integer Column
+          isRequired: true
+
+        - type: tabular
+          displayName: 'Timestamp'
+          attributeName: orderBy
+          columns:
+      
+          -  type: columnDropdownSelector
+             displayName: Column Name
+             attributeName: colName
+             isRequired: true
+             enableIf: "{% if config.recordVersioning in ('Datetime Column') %} true {% else %} false {% endif %}"
+        
+          isRequired: false
+          enableIf: "{% if config.recordVersioning in ('Datetime Column') %} true {% else %} false {% endif %}"
+        
+        
+        - type: tabular
+          displayName: 'Sequence'
+          attributeName: orderseq
+          columns:
+      
+          -  type: columnDropdownSelector
+             displayName: Column Name
+             attributeName: colNameseq
+             isRequired: true
+             enableIf: "{% if config.recordVersioning in ('Integer Column') %} true {% else %} false {% endif %}"
+        
+          isRequired: false
+          enableIf: "{% if config.recordVersioning in ('Integer Column') %} true {% else %} false {% endif %}"
+        
+         
+        - type: tabular
+          displayName: 'Timestamp-track data load'
+          attributeName: recordorderBy
+          columns:
+      
+          -  type: columnDropdownSelector
+             displayName: Column Name
+             attributeName: ocolName
+             isRequired: true
+             enableIf: "{% if config.recordVersioning in ('Integer Column') %} true {% else %} false {% endif %}"
+        
+          isRequired: false
+          enableIf: "{% if config.recordVersioning in ('Integer Column') %} true {% else %} false {% endif %}"
+
+        - type: tabular
+          displayName: 'Date / Timestamp Columns'
+          attributeName: orderByDateTime
+          columns:
+      
+          -  type: columnDropdownSelector
+             displayName: Date Column
+             attributeName: colNameDate
+             isRequired: true
+             enableIf: "{% if config.recordVersioning in ('Date Column and Time Column') %} true {% else %} false {% endif %}"
+        
+          -  type: columnDropdownSelector
+             displayName: Timestamp Column
+             attributeName: colNameTimestamp
+             isRequired: true
+             enableIf: "{% if config.recordVersioning in ('Date Column and Time Column') %} true {% else %} false {% endif %}"
+        
+          isRequired: false
+          enableIf: "{% if config.recordVersioning in ('Date Column and Time Column') %} true {% else %} false {% endif %}"
+
+       
+      - groupName: General Options
+        items: 
+
+        - type: materializationSelector
+          default: dynamic table
+          options:
+          - dynamic table
+          - transient dynamic table
+          isRequired: true
+
+        - type: toggleButton
+          attributeName: clusterKey
+          displayName: Cluster Key
+          default: false
+          isRequired: true
+
+        - type: toggleButton
+          attributeName: clusterKeyExpressions
+          displayName: Allow Expressions in Cluster Key
+          default: false
+          isRequired: false
+          enableIf: "{% if config.clusterKey %} true {% else %} false {% endif %}"
+
+        - type: tabular
+          displayName: 'Cluster Key'
+          attributeName: clusterKeyConfig
+          columns:
+
+          -  type: columnDropdownSelector
+             displayName: Column Name
+             attributeName: columnName
+             isRequired: false
+      
+          isRequired: false
+          enableIf: "{% if (config.clusterKey and not config.clusterKeyExpressions) %} true {% else %} false {% endif %}"
+
+        - type: tabular
+          displayName: 'Cluster Key'
+          attributeName: clusterKeyConfigExpressions
+          columns:
+
+          -  type: columnDropdownSelector
+             displayName: Column Name
+             attributeName: columnNameExpressions
+             isRequired: false
+      
+          -  type: textBox
+             displayName: Expression (Column name to be enclosed within double quotes)
+             attributeName: sqlExpression
+             default: "ex. trunc(<column_name>, -5)"
+             isRequired: false
+      
+          isRequired: false
+          enableIf: "{% if (config.clusterKey and config.clusterKeyExpressions) %} true {% else %} false {% endif %}"
+
+    systemColumns:
+    - displayName: '{{NODE_NAME}}_KEY'
+      transform: '{{ dimensionHistoryPk() }}'
+      dataType: STRING
+      placement: beginning
+      attributeName: isSurrogateKey
+
+    - displayName: RECORD_START_TIME
+      transform: "{%if config.recordVersioning not in ('Integer Column')%}{{order_by_col()}}{%else%} {{order_by_col_int()}}{%endif%}"
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: isSystemStartDate
+
+    - displayName: RECORD_END_TIME
+      transform: "LEAD({%if config.recordVersioning not in ('Integer Column')%}{{order_by_col()}}{%else%}{{order_by_col_int()}} {%endif%}) OVER (PARTITION BY {{ partition_by() }} ORDER BY {{ order_by_col() }} asc)"
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: isSystemEndDate
+
+    - displayName: RECORD_CURRENT_FLAG
+      transform: "CASE WHEN (LEAD({%if config.recordVersioning not in ('Integer Column')%}{{order_by_col()}}{%else%}{{order_by_col_int()}} {%endif%}) OVER (PARTITION BY {{ partition_by() }} ORDER BY {{ order_by_col() }} asc)) IS NULL THEN 1 ELSE 0 END"
+      dataType: NUMERIC
+      placement: end
+      attributeName: isRecordCurrent
+
+    - displayName: RECORD_CREATED_DATE
+      transform: "FIRST_VALUE({%if config.recordVersioning not in ('Integer Column')%}{{order_by_col()}}{%else%} {{order_by_col_int()}}{%endif%}) OVER (PARTITION BY {{ partition_by() }} ORDER BY {{ order_by_col() }} asc)"
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: recordCreated
+name: Copy of Dynamic Table Dimension
+type: NodeType
