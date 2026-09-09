@@ -42,7 +42,7 @@ operation:
     tableOnlyToggle: false
   database: ""
   deployEnabled: true
-  description: ""
+  description: test
   isMultisource: false
   locationName: TARGET
   materializationType: semantic view
