@@ -1,0 +1,100 @@
+fileVersion: 1
+id: 3df0f031-8125-4323-bd17-d7124133e4d8
+name: SMV_CUSTOMER
+operation:
+  config:
+    DimConfig:
+      items:
+        - dimAlias: ""
+          dimCol:
+            columnCounter: 8c03f373-da52-49d7-8c55-054eee6a40ba
+            name: C_NAME
+            stepCounter: 3df0f031-8125-4323-bd17-d7124133e4d8
+          dimComment: ""
+          dimSynonym: ""
+          dimTransform: ""
+    aiQuestionCategorization: ""
+    aiSqlGeneration: ""
+    deriveCol: false
+    dimToggle: true
+    factDetConfig:
+      items:
+        - {}
+    factToggle: false
+    foreignKeyConfig:
+      items:
+        - {}
+    foreignToggle: false
+    metricConfig:
+      items:
+        - {}
+    metricToggle: false
+    primaryKeyConfig:
+      items:
+        - primAlias: ""
+          primComment: ""
+          primSynonym: ""
+          primaryKey:
+            columnCounter: 8f314f75-1fc4-47b1-8b9e-d56c38f7f673
+            name: C_CUSTKEY
+            stepCounter: 3df0f031-8125-4323-bd17-d7124133e4d8
+    semanticMaterialization: semantic view
+    tableOnlyToggle: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET
+  materializationType: semantic view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8f314f75-1fc4-47b1-8b9e-d56c38f7f673
+          stepCounter: 3df0f031-8125-4323-bd17-d7124133e4d8
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: C_CUSTKEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: ebdab976-e04b-4d55-a488-feb0c0f0727a
+                stepCounter: 2fdc0a10-c8fb-4dd4-b6fe-66b5eb622f36
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8c03f373-da52-49d7-8c55-054eee6a40ba
+          stepCounter: 3df0f031-8125-4323-bd17-d7124133e4d8
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: C_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 9a0b6995-87d5-4ae4-927c-bf10182c726f
+                stepCounter: 2fdc0a10-c8fb-4dd4-b6fe-66b5eb622f36
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          CUSTOMER: 2fdc0a10-c8fb-4dd4-b6fe-66b5eb622f36
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SRC
+            nodeName: CUSTOMER
+        join:
+          joinCondition: FROM {{ ref('SRC', 'CUSTOMER') }} "CUSTOMER"
+        name: SMV_CUSTOMER
+        noLinkRefs: []
+  name: SMV_CUSTOMER
+  overrideSQL: false
+  schema: ""
+  sqlType: SV:::632
+  type: sql
+  version: 1
+type: Node
