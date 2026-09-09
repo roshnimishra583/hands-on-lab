@@ -168,34 +168,6 @@ operation:
               - columnCounter: 2259e9b3-2d88-4d93-8103-022a647bdc76
                 stepCounter: 12b18c96-1bec-4c18-b78b-6256f2f587b7
             transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: 6bfd34d1-4a18-4d3d-8510-da4bd119f36e
-          stepCounter: 9e08f6db-37f2-4bd1-8ed5-39020d2054dc
-        config: {}
-        dataType: NUMBER(38,0)
-        description: ""
-        name: O_SHIPPRIORITY
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 71cfe74c-2bdf-4ce0-87b1-7a8118399312
-                stepCounter: 12b18c96-1bec-4c18-b78b-6256f2f587b7
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: 76393369-c63e-4b37-a642-72cd3f49075e
-          stepCounter: 9e08f6db-37f2-4bd1-8ed5-39020d2054dc
-        config: {}
-        dataType: VARCHAR(79)
-        description: ""
-        name: O_COMMENT
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: cdcc8a6f-993e-4d9f-96f2-7d34fcf5ff77
-                stepCounter: 12b18c96-1bec-4c18-b78b-6256f2f587b7
-            transform: ""
       - acceptedValues:
           strictMatch: true
           values: []

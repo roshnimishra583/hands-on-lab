@@ -252,11 +252,11 @@ does not permit copying or modification for any other purpose.
                 {%- for col in desiredState.columns %}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
-                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
-                    {%- endif %}
-                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-                    {%- if not loop.last -%}, {% endif %}
-                {% endfor %}
+                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif -%}
+                    {%- endif -%}
+                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+                    {%- if not loop.last -%}, {% endif -%}
+                {%- endfor %}
                 {% set pkConstraint = generatePrimaryKeyConstraint(desiredState) %}
                 {%- if pkConstraint | trim != '' %}, {{ pkConstraint }}{%- endif %}
             )
@@ -278,11 +278,11 @@ does not permit copying or modification for any other purpose.
                 {%- for col in desiredState.columns %}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
-                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
-                    {%- endif %}
-                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-                    {%- if not loop.last -%}, {% endif %}
-                {% endfor %}
+                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif -%}
+                    {%- endif -%}
+                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+                    {%- if not loop.last -%}, {% endif -%}
+                {%- endfor %}
                 {% set pkConstraint = generatePrimaryKeyConstraint(desiredState) %}
                 {%- if pkConstraint | trim != '' %}, {{ pkConstraint }}{%- endif %}
             )
@@ -414,76 +414,76 @@ does not permit copying or modification for any other purpose.
             {% endfor %}
 
             {# Change data types etc #}
-            {%- set nsVariables.colchanges = 0 %}
+            {% set nsVariables.colchanges = 0 %}
             {%- for alterCurCol in currentState.columns %}        
-                {%- if alterCurCol.id in desiredState.columns | map(attribute="id") %}
-                    {%- set currentDatatype = alterCurCol.dataType %}
-                    {%- set currentNullable = alterCurCol.nullable %}
-                    {%- set currentDefaultValue = alterCurCol.defaultValue %}
-                    {%- set currentDescription = alterCurCol.description %}
+                {% if alterCurCol.id in desiredState.columns | map(attribute="id") %}
+                    {% set currentDatatype = alterCurCol.dataType %}
+                    {% set currentNullable = alterCurCol.nullable %}
+                    {% set currentDefaultValue = alterCurCol.defaultValue %}
+                    {% set currentDescription = alterCurCol.description %}
 
-                    {%- set desiredColumnName = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='name') | first %}
-                    {%- set desiredDatatype = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='dataType') | first %}
-                    {%- set desiredNullable = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='nullable') | first %}
-                    {%- set desiredDefaultValue = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='defaultValue') | first %}
-                    {%- set desiredDescription = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='description') | first %}
+                    {% set desiredColumnName = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='name') | first %}
+                    {% set desiredDatatype = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='dataType') | first %}
+                    {% set desiredNullable = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='nullable') | first %}
+                    {% set desiredDefaultValue = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='defaultValue') | first %}
+                    {% set desiredDescription = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='description') | first %}
 
-                    {%- set datatypeTest = currentDatatype == desiredDatatype %}
-                    {%- set nullableTest = currentNullable == desiredNullable %}
-                    {%- set defaultValueTest = currentDefaultValue == desiredDefaultValue %}
-                    {%- set descriptionTest = currentDescription == desiredDescription %}
+                    {% set datatypeTest = currentDatatype == desiredDatatype %}
+                    {% set nullableTest = currentNullable == desiredNullable %}
+                    {% set defaultValueTest = currentDefaultValue == desiredDefaultValue %}
+                    {% set descriptionTest = currentDescription == desiredDescription %}
 
-                    {%- if (datatypeTest == false or
+                    {% if (datatypeTest == false or
                             nullableTest == false or
                             defaultValueTest == false or
                             descriptionTest == false) %}
-                        {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
 
-                        {%- if nsVariables.colchanges == 1 %}
+                        {% if nsVariables.colchanges == 1 %}
                             {{ stage('Change Column Attributes',true,"sql","create") }}
                             ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                             MODIFY
-                        {%- endif %}
+                        {% endif %}
                         
-                        {%- if datatypeTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{% endif %}
+                        {% if datatypeTest == false %}
+                            {% if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
                             SET DATA TYPE {{ desiredDatatype }}
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-                        {%- endif %}
+                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
                         
-                        {%- if nullableTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{% endif %}
+                        {% if nullableTest == false %}
+                            {% if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
-                            {%- if currentNullable == true %}
+                            {% if currentNullable == true %}
                                 SET
-                            {%- else %}
+                            {% else %}
                                 DROP
-                            {%- endif %}
+                            {% endif %}
                             NOT NULL
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-                        {%- endif %}
+                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
                         
-                        {%- if descriptionTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{% endif %}
+                        {% if descriptionTest == false %}
+                            {% if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
                             COMMENT '{{ desiredDescription | escape }}'
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-                        {%- endif %}
+                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
                         
-                        {%- if defaultValueTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{% endif %}
+                        {% if defaultValueTest == false %}
+                            {% if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
-                            {%- if desiredDefaultValue == '' %}
+                            {% if desiredDefaultValue == '' %}
                                 DROP DEFAULT
-                            {%- else %}
+                            {% else %}
                                 SET DEFAULT {{ desiredDefaultValue }}
-                            {%- endif %}
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-                        {%- endif %}
-                    {%- endif %}
-                {%- endif %}
-            {%- endfor %}
+                            {% endif %}
+                            {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
 
             {# =========================================================
                Primary Key Name and Column List Test

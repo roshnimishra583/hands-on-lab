@@ -234,7 +234,7 @@ does not permit copying or modification for any other purpose.
                 {{ stage('Create Work '+ ' {{desiredState.config.createas}}',true,"sql","create") }}
                CREATE OR REPLACE {{desiredState.config.createas}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                 (
-                {% for col in desiredState.columns %}
+                {% for col in desiredState.columns -%}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
                         {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
@@ -262,7 +262,7 @@ does not permit copying or modification for any other purpose.
             {{ stage('Create Work '+ ' {{desiredState.config.createas}}',true,"sql","create") }}
             CREATE OR REPLACE {{desiredState.config.createas}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
             (
-                {% for col in desiredState.columns %}
+                {% for col in desiredState.columns -%}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
                         {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
@@ -271,7 +271,7 @@ does not permit copying or modification for any other purpose.
                     {%- if not loop.last -%}, {% endif %}
                 {% endfor %}
                 {% set pkConstraint = generatePrimaryKeyConstraint(desiredState) %}
-                {% if pkConstraint | trim != '' %}, {{ pkConstraint }}{% endif %}
+                {% if pkConstraint | trim != '' %}, {{ pkConstraint }}{% endif -%}
             )
                 {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'
                 {% endif %}
@@ -357,40 +357,40 @@ does not permit copying or modification for any other purpose.
  
             {# Drop Columns #}
             {% set nsVariables = namespace(colchanges=0) %}
-            {% for dropCurCol in currentState.columns %}
-                {% if dropCurCol.id not in desiredState.columns | map(attribute="id") %}
-                {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+            {%- for dropCurCol in currentState.columns -%}
+                {%- if dropCurCol.id not in desiredState.columns | map(attribute="id") -%}
+                {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
  
-                    {% if nsVariables.colchanges == 1 %}
+                    {%- if nsVariables.colchanges == 1 %}
                         {{ stage('Drop Columns',true,"sql","create") }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         DROP COLUMN
                     {% else %}
                         ,
-                    {% endif %}
+                    {%- endif -%}
                     "{{ dropCurCol.name }}"
-                {% endif %}
+                {%- endif -%}
             {% endfor %}
  
             {# Add Columns #}
-            {% set nsVariables = namespace(colchanges=0) %}
-            {% for addDesCol in desiredState.columns %}
-                {% if addDesCol.id not in currentState.columns | map(attribute="id") %}
-                {% set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+            {%- set nsVariables = namespace(colchanges=0) %}
+            {%- for addDesCol in desiredState.columns -%}
+                {%- if addDesCol.id not in currentState.columns | map(attribute="id") -%}
+                {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
  
-                    {% if nsVariables.colchanges == 1 %}
+                    {%- if nsVariables.colchanges == 1 %}
                         {{ stage('Add Columns',true,"sql","create") }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         ADD COLUMN
                     {% else %}
                         ,
-                    {% endif %}
+                    {%- endif -%}
                         "{{ addDesCol.name }}" {{ addDesCol.dataType }}
                         {%- if not addDesCol.nullable %} NOT NULL
                             {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{% endif %}
                         {% endif %}
                         {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDesCol.description | escape }}'{% endif %}
-                {% endif %}
+                {%- endif -%}
             {% endfor %}
  
             {# Rename Columns #}
