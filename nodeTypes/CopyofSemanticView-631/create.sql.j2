@@ -464,6 +464,18 @@ does not permit copying or modification for any other purpose.
         {%- if desiredState.config.aiQuestionCategorization | default('') | trim | length > 0 %}
             AI_QUESTION_CATEGORIZATION '{{ desiredState.config.aiQuestionCategorization | trim | escape }}'
         {%- endif %}
+
+        {%- if desiredState.config.aiVerifiedQueries.get('items') %}
+        AI_VERIFIED_QUERIES (
+        {%- for item in desiredState.config.aiVerifiedQueries.get('items') %}
+            {{ item.queryName | trim }} AS (
+                QUESTION '{{ item.question | trim | replace("'", "''") }}'
+                SQL '{{ item.sql | trim | replace("'", "''") }}'
+            ){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        )
+    {%- endif %}
+
     {%- endif %}
 
 {%- elif desiredState == undefined and currentState != undefined %}

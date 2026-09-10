@@ -1,5 +1,5 @@
 fileVersion: 1
-id: "629"
+id: "631"
 isDisabled: false
 metadata:
   defaultStorageLocation: null
@@ -293,5 +293,30 @@ metadata:
             attributeName: aiQuestionCategorization
             isRequired: false
             enableIf: "{% if config.deriveCol %} false {% else %} true {% endif %}"
+
+        -   type: tabular
+            displayName: AI Verified Queries
+            attributeName: aiVerifiedQueries
+            isRequired: false
+            enableIf: "{% if config.deriveCol %} false {% else %} true {% endif %}"
+
+            columns:
+            -   type: textBox
+                displayName: Query Name
+                attributeName: queryName
+                isRequired: false
+                enableIf: 'true'
+
+            -   type: textBox
+                displayName: Question
+                attributeName: question
+                isRequired: false
+                enableIf: 'true'
+
+            -   type: textBox
+                displayName: SQL
+                attributeName: sql
+                isRequired: false
+                enableIf: 'true'
 name: Copy of Semantic View
 type: NodeType
