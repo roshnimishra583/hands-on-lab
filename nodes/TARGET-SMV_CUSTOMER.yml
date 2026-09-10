@@ -14,7 +14,7 @@ operation:
           dimSynonym: ""
           dimTransform: ""
     aiQuestionCategorization: ""
-    aiSqlGeneration: ""
+    aiSqlGeneration: Use customer information to answer questions about customers.
     deriveCol: false
     dimToggle: true
     factDetConfig:
