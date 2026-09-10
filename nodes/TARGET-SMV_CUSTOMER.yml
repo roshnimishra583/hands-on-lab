@@ -14,7 +14,7 @@ operation:
           dimSynonym: ""
           dimTransform: ""
     aiQuestionCategorization: ""
-    aiSqlGeneration: Use customer information to answer questions about customers.
+    aiSqlGeneration: Always use customer name when answering customer-related questions.
     deriveCol: false
     dimToggle: true
     factDetConfig:
