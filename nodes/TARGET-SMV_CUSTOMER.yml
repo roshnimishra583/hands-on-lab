@@ -13,8 +13,8 @@ operation:
           dimComment: ""
           dimSynonym: ""
           dimTransform: ""
-    aiQuestionCategorization: ""
-    aiSqlGeneration: Always use customer name when answering customer-related questions.
+    aiQuestionCategorization: Use customer-related questions for customer data and avoid unrelated questions.
+    aiSqlGeneration: ""
     deriveCol: false
     dimToggle: true
     factDetConfig:
