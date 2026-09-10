@@ -18,11 +18,11 @@ operation:
     aiVerifiedQueries:
       items:
         - queryName: customer_name_lookup
-          question: What is the name of the customer with customer key 600012?
+          question: What is the name of the customer with customer key 600015?
           sql: |-
             SELECT CUSTOMER.C_NAME
                          FROM CUSTOMER
-                         WHERE CUSTOMER.C_CUSTKEY = 600012
+                         WHERE CUSTOMER.C_CUSTKEY = 600015
     deriveCol: false
     dimToggle: true
     factDetConfig:
