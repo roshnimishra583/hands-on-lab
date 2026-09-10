@@ -14,7 +14,7 @@ operation:
           dimSynonym: ""
           dimTransform: ""
     aiQuestionCategorization: ""
-    aiSqlGeneration: ""
+    aiSqlGeneration: Use customer information to answer questions about customers.
     deriveCol: false
     dimToggle: true
     factDetConfig:
@@ -42,7 +42,7 @@ operation:
     tableOnlyToggle: false
   database: ""
   deployEnabled: true
-  description: test
+  description: ""
   isMultisource: false
   locationName: TARGET
   materializationType: semantic view
