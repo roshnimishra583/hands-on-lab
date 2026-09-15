@@ -5,8 +5,8 @@ Unauthorized reproduction, distribution, or disclosure of this material is stric
 Coalesce permits you to copy and modify this script for the purposes of using with Coalesce but
 does not permit copying or modification for any other purpose.  
 #}
-{# == Node Type Name           : Work Advanced Deploy == #}
-{# == Node Type Description    : This node creates work table,view and also override create sql for view with advanced deployment strategy == #}
+{# == Node Type Name           :  Persistent Stage Advanced Deploy == #}
+{# == Node Type Description    : This node creates Persistent stage tables with advanced deploy strategy  == #}
 
 {% if desiredState %}
 
@@ -21,88 +21,11 @@ does not permit copying or modification for any other purpose.
         {%- endif -%}
     {%- endif -%}
 
-    {% if  desiredState.node.override.create.enabled and desiredState.node.materializationType == 'view' %}
+{# CreateSQL for table #}
 
-         {% if currentState != undefined %}
-            {% if currentState.node.materializationType != 'view' %}
-                {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
-                {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
-                DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
-            {% endif %}
-        {% endif %}
+{% if desiredState.node.materializationType == 'table' or desiredState.node.materializationType == 'transient table' %}
 
-	      {{ desiredState.node.override.create.script }}
-
-    {%elif desiredState.node.materializationType == 'view' %}
-
-        {% if currentState != undefined %}
-            {%if currentState.storageLocations|length == 0%}          
-              {% set currentDatabase = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='database') | string %}
-              {% set currentSchema = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='schema') | string %}
-               {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}
-               
-            {%else %}  
-            {# Current target node mappings #}
-            {% set currentDatabase = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='database') | first %}
-            {% set currentSchema = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='schema') | first %}
-            {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}  
-            {% endif %}      
-       
-            {# Desired target node mappings #}
-            {% set desiredDatabase = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='database') | first %}
-            {% set desiredSchema = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='schema') | first %}
-            {% set desiredDatabaseSchema = desiredDatabase + '.' + desiredSchema %}
-             		
-            {% if currentState.node.materializationType != 'view'
-                or desiredState.node.name != currentState.node.name
-                or desiredDatabaseSchema != currentDatabaseSchema %}
-
-                {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name),true, "sql", "drop") }}
-                {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
-                DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}                   
-            {% endif %}
-        {% endif %}
-       
-	   {% if currentState == undefined or currentState != desiredState %}
-        {{ stage('Create Work View',true, "sql", "create") }}
-
-        CREATE OR REPLACE VIEW {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
-        (
-            {%- for col in desiredState.columns %}
-                "{{ col.name }}"
-                {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-                {%- if not loop.last -%}, {% endif -%}
-            {%- endfor %}
-        )
-        {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
-        AS
-        {%- for source in desiredState.sources %}
-            SELECT
-            {%- if desiredState.config.selectDistinct %}
-              DISTINCT
-            {%- endif %}
-            {%- for col in source.columns %}
-                {{ get_source_transform(col) }} AS "{{ col.name }}"
-                {%- if not loop.last -%}, {% endif -%}
-            {%- endfor %}
-
-            {{ source.join }}
-            {% if desiredState.config.groupByAll %}
-		       Group By All
-	         {% endif %}
-            {% if not loop.last %}
-                {% if desiredState.config.insertStrategy in ['UNION', 'UNION ALL'] %}
-                    {{ desiredState.config.insertStrategy }}
-                {% else %}
-                    UNION
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-      {% endif %}
-      
-    {% elif desiredState.node.materializationType == 'table' or desiredState.node.materializationType == 'transient table'  %}
-        
-        {# Figure out cluster key #}
+            {# Figure out cluster key #}
         {% set nsVariables = namespace(finalClusterKey="") %}
         {% if desiredState.config.clusterKey == true %}
             {% if desiredState.config.clusterKeyExpressions == true %}
@@ -135,54 +58,56 @@ does not permit copying or modification for any other purpose.
             {% endif %}
         {% endif %}
 
-
         {% if currentState != undefined and currentState.node.materializationType != desiredState.node.materializationType %}
 
-                {# Change in materialization type #}
+             {# Change in materialization type #} 
 
                 {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
                 {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
                 DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
 
-                {{ stage('Create Work '+ ' {{desiredState.node.materializationType}}' ) }}
-               CREATE OR REPLACE {{desiredState.node.materializationType}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
-                (
-                {%- for col in desiredState.columns %}
+                {{ stage('Create Persistent Stage '+ desiredState.node.materializationType) }}
+			   CREATE OR REPLACE {{ desiredState.node.materializationType }} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
+               (
+                {%- for col in desiredState.columns -%}
                     "{{ col.name }}" {{ col.dataType }}
                     {%- if not col.nullable %} NOT NULL
-                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif -%}
-                    {%- endif -%}
-                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
-                    {%- if not loop.last -%}, {% endif -%}
+                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
+                    {% endif %}
+                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
+                    {%- if not loop.last -%}, {% endif %}
                 {%- endfor %}
                 )
-               {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
+			  {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
 
-               {% if desiredState.config.clusterKey == true %}
-                  {{ stage('Apply Table Clustering') }}
-                 ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }} {{ nsVariables.finalClusterKey }}
+              {% if desiredState.config.clusterKey == true %}
+                {{ stage('Apply Table Clustering') }}
+                ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }} {{ nsVariables.finalClusterKey }}
 
-                   {{ stage('Resume Recluster Table') }}
-                  ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }} RESUME RECLUSTER
-
-               {% endif %}
-                
+                {{ stage('Resume Recluster Table') }}
+                ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }} RESUME RECLUSTER
+              {% endif %}
+    
         {% endif %}
 
         {% if currentState == undefined or currentState.storageLocations | length == 0  %}
-            {{ stage('Create Work '+ ' {{desiredState.node.materializationType}}' ) }}
-            CREATE OR REPLACE {{desiredState.node.materializationType}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
-            (
-                {%- for col in desiredState.columns %}
-                    "{{ col.name }}" {{ col.dataType }}
-                    {%- if not col.nullable %} NOT NULL
-                        {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif -%}
-                    {%- endif -%}
-                    {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
-                    {%- if not loop.last -%}, {% endif -%}
-                {%- endfor %}
-            )
-            {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
+
+        {{ stage('Create Persistent Stage' +' ' + desiredState.node.materializationType) }}
+        CREATE OR REPLACE {{desiredState.node.materializationType}} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
+        (
+            {%- for col in desiredState.columns -%}
+                "{{ col.name }}" {{ col.dataType }}
+                {% if col.isSurrogateKey %}
+                    identity
+                {% endif %}
+                {%- if not col.nullable %} NOT NULL
+                    {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
+                {% endif %}
+                {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
+                {%- if not loop.last -%}, {% endif %}
+            {%- endfor %}
+        )
+        {%- if desiredState.node.description | length > 0 %} COMMENT = '{{ desiredState.node.description | escape }}'{% endif %}
 
         {% if desiredState.config.clusterKey == true %}
             {{ stage('Apply Table Clustering') }}
@@ -196,8 +121,7 @@ does not permit copying or modification for any other purpose.
 
             {# Change Node Name or Change Storage Location #}
             {# Storage Location Tests #}
-
-
+            
          {% set nsVariables = namespace(storageLocationTest=true) %}
 
             {# =========================================================
@@ -206,7 +130,10 @@ does not permit copying or modification for any other purpose.
             {% set nsMetaVariables = namespace(
                 joinTest            = true,
                 transformTest       = true,
-                sourceLinkTest      = true,
+                 sourceLinkTest      = true,
+                businessKeyTest     = true,
+                changeTrackingTest  = true,
+                insertStrategyTest  = true,
                 truncateBeforeTest  = true,
                 testsEnabledTest    = true,
                 distinctTest        = true,
@@ -214,11 +141,13 @@ does not permit copying or modification for any other purpose.
                 preSQLTest          = true,
                 postSQLTest         = true,
                 orderByTest         = true,
-                ASOFTest            = true,
                 metaDataChanged     = false,
                 joinDiff            = [],
                 transformDiff       = [],
                 sourceLinkDiff      = [],
+                businessDiff        = [],
+                changeTrackingDiff  = [],
+                insertStrategyDiff  = [],
                 truncateBeforeDiff  = [],
                 testsEnabledDiff    = [],
                 distinctDiff        = [],
@@ -227,7 +156,6 @@ does not permit copying or modification for any other purpose.
                 postSQLDiff         = [],
                 orderByDiff         = [],
                 metaDataChanges     = [],
-                ASOFDiff            = [],
                 metadataUpdate      = 'Metadata Update'
             ) %}
 
@@ -243,10 +171,10 @@ does not permit copying or modification for any other purpose.
 
                         {# =========================================================
                         Join comparison
-                        ========================================================= #}
-                        
-                        {% set desiredStateSources = safe_metadata(src.join) %}
+                        ========================================================= #}   
+						{% set desiredStateSources = safe_metadata(src.join) %}
 						{% set currentStateSources = safe_metadata(matchingSource.join) %}
+
                         {# Same number of sources — compare join transformations #}
                         {% if desiredStateSources != currentStateSources %}
                             {% set nsMetaVariables.joinTest = false %}
@@ -283,7 +211,7 @@ does not permit copying or modification for any other purpose.
                                         "Source Name": src.name,
                                         "Column Name": col.name,
                                         "is": safe_metadata(col.transform),
-                                        "was": safe_metadata(currentTransform)
+                                            "was": safe_metadata(currentTransform)
                                     }) %}
                                 {% endif %}
 
@@ -332,16 +260,70 @@ does not permit copying or modification for any other purpose.
             {% endif %}
 
             {# =========================================================
-            ASOF Toggle comparison
+            Business key comparison
             ========================================================= #}
-            {% if currentState.config.asofJoinMain | default(false) != desiredState.config.asofJoinMain %}
-                {% set nsMetaVariables.ASOFTest = false %}
-                {% set _ = nsMetaVariables.ASOFDiff.append({
-                    "is": desiredState.config.asofJoinMain,
-                    "was": currentState.config.asofJoinMain | default(false)
+            {% set currentBusinessKeys = currentState.columns
+                | selectattr('isBusinessKey', 'equalto', true)
+                | map(attribute='name')
+                | list
+                | sort
+            %}
+
+            {% set desiredBusinessKeys = desiredState.columns
+                | selectattr('isBusinessKey', 'equalto', true)
+                | map(attribute='name')
+                | list
+                | sort
+            %}
+
+            {% if currentBusinessKeys != desiredBusinessKeys %}
+                {% set nsMetaVariables.businessKeyTest = false %}
+                {% set _ = nsMetaVariables.businessDiff.append({
+                    "is": desiredBusinessKeys,
+                    "was": currentBusinessKeys
                 }) %}
 
-                {{ update_metadata("ASOF", nsMetaVariables.ASOFDiff, "ASOF") }}
+                {{ update_metadata("Business Keys", nsMetaVariables.businessDiff, "Business Keys") }}
+
+            {% endif %}
+
+            {# =========================================================
+            Change Tracking comparison
+            ========================================================= #}
+            {% set currentChangeTracking = currentState.columns
+                | selectattr('isChangeTracking', 'equalto', true)
+                | map(attribute='name')
+                | list
+                | sort
+            %}
+
+            {% set desiredChangeTracking = desiredState.columns
+                | selectattr('isChangeTracking', 'equalto', true)
+                | map(attribute='name')
+                | list
+                | sort
+            %}
+
+            {% if currentChangeTracking != desiredChangeTracking %}
+                {% set nsMetaVariables.changeTrackingTest = false %}
+                {% set _ = nsMetaVariables.changeTrackingDiff.append({
+                    "is": desiredChangeTracking,
+                    "was": currentChangeTracking
+                }) %}
+                {{ update_metadata("Change Tracking", nsMetaVariables.changeTrackingDiff, "Change Tracking") }}
+            {% endif %}
+
+            {# =========================================================
+            Insert Strategy comparison
+            ========================================================= #}
+            {% if currentState.config.insertStrategy | default('') != desiredState.config.insertStrategy %}
+                {% set nsMetaVariables.insertStrategyTest = false %}
+                {% set _ = nsMetaVariables.insertStrategyDiff.append({
+                    "is": desiredState.config.insertStrategy,
+                    "was": currentState.config.insertStrategy | default('')
+                }) %}
+
+                {{ update_metadata("Insert Strategy", nsMetaVariables.insertStrategyDiff, "Insert Strategy") }}
 
             {% endif %}
 
@@ -378,7 +360,7 @@ does not permit copying or modification for any other purpose.
                     {% set nsMetaVariables.testsEnabledTest = false %}
                     {% set _ = nsMetaVariables.testsEnabledDiff.append({
                         "is": desiredState.node.tests | map(attribute="name") | list | sort,
-                        "was": currentState.node.tests | map(attribute="name") | list | sort 
+                        "was": currentState.node.tests | map(attribute="name") | list | sort
                     }) %}
                 {% else %}
                     {% for dtest in desiredState.node.tests %}
@@ -458,7 +440,7 @@ does not permit copying or modification for any other purpose.
             {# =========================================================
             PRE-SQL comparison
             ========================================================= #}
-            {% if currentState.config.preSQL | default('') != desiredState.config.preSQL | default('') %}
+            {% if currentState.config.preSQL | default('') != desiredState.config.preSQL %}
                 {% set nsMetaVariables.preSQLTest = false %}
                 {% set _ = nsMetaVariables.preSQLDiff.append({
                     "is": safe_metadata(desiredState.config.preSQL),
@@ -472,7 +454,7 @@ does not permit copying or modification for any other purpose.
             {# =========================================================
             POST-SQL comparison
             ========================================================= #}
-            {% if currentState.config.postSQL| default('') != desiredState.config.postSQL | default('') %}
+            {% if currentState.config.postSQL | default('') != desiredState.config.postSQL %}
                 {% set nsMetaVariables.postSQLTest = false %}
                 {% set _ = nsMetaVariables.postSQLDiff.append({
                     "is": safe_metadata(desiredState.config.postSQL),
@@ -534,6 +516,9 @@ does not permit copying or modification for any other purpose.
             or sourcesTest == false
             or nsMetaVariables.transformTest == false
             or nsMetaVariables.sourceLinkTest == false
+            or nsMetaVariables.businessKeyTest == false
+            or nsMetaVariables.changeTrackingTest == false
+            or nsMetaVariables.insertStrategyTest == false
             or nsMetaVariables.truncateBeforeTest == false
             or nsMetaVariables.testsEnabledTest == false
             or nsMetaVariables.distinctTest == false
@@ -541,7 +526,6 @@ does not permit copying or modification for any other purpose.
             or nsMetaVariables.postSQLTest == false
             or nsMetaVariables.preSQLTest == false
             or nsMetaVariables.orderByTest == false
-            or nsMetaVariables.ASOFTest == false
             %}
                 {% set nsMetaVariables.metaDataChanged = true %}
 
@@ -573,6 +557,8 @@ does not permit copying or modification for any other purpose.
                 {% set nsVariables.storageLocationTest = false %}
              {% endif %}
 
+
+
             {# Clustering Test #}
             {% set clusterKeyTest = currentState.config.clusterKey | default(false) == desiredState.config.clusterKey %}
             {% set clusterKeyExpressionsTest = currentState.config.clusterKeyExpressions | default(false) == desiredState.config.clusterKeyExpressions %}
@@ -598,10 +584,10 @@ does not permit copying or modification for any other purpose.
                 {% set csch = currentState.storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='schema') | first %}
 
                 ALTER TABLE  "{{cdb}}"."{{csch}}"."{{currentState.node.name}}"
-                RENAME TO   {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
+                RENAME TO   {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }} 
 
                 {# Metadata changes detected #}
-                {% set nsMetaVariables.metaDataChanged = true %} 
+                {% set nsMetaVariables.metaDataChanged = true %}            
             {% endif %}
 
             {# Change table description #}
@@ -611,70 +597,68 @@ does not permit copying or modification for any other purpose.
                 SET COMMENT = '{{ desiredState.node.description | escape }}'
 
                 {# Metadata changes detected #}
-                {% set nsMetaVariables.metaDataChanged = true %} 
+                {% set nsMetaVariables.metaDataChanged = true %}
             {% endif %}
 
-
-
             {# Drop Columns #}
-			{%- set nsVariables = namespace(colchanges=0) %}
-			{%- for dropCurCol in currentState.columns %}
-				{%- if dropCurCol.id not in desiredState.columns | map(attribute="id") -%}
-				{%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
-					{%- if nsVariables.colchanges == 1 %}
-						{{ stage('Drop Columns') }}
-						ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
-						DROP COLUMN 
-					{% else -%}
-						, 
-					{%- endif -%}
-					"{{ dropCurCol.name }}"
-					{# Metadata changes detected #}
-					{%- set nsMetaVariables.metaDataChanged = true -%}
-				{%- endif -%}
-			{%- endfor %}
+            {%- set nsVariables = namespace(colchanges=0) %}
+            {%- for dropCurCol in currentState.columns %}
+                {%- if dropCurCol.id not in desiredState.columns | map(attribute="id") -%}
+                {%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
+                    {%- if nsVariables.colchanges == 1 -%}
+                        {{ stage('Drop Columns') }}
+                        ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
+                        DROP COLUMN 
+                    {% else -%}
+                        ,{% endif -%}
+                    "{{ dropCurCol.name }}"
+                    {# Metadata changes detected #}
+                    {%- set nsMetaVariables.metaDataChanged = true -%}
+                {%- endif -%}
+            {%- endfor -%}
 
             {# Add Columns #}
             {%- set nsVariables = namespace(colchanges=0) %}
-            {%- for addDesCol in desiredState.columns %}
+            {%- for addDesCol in desiredState.columns -%}
                 {%- if addDesCol.id not in currentState.columns | map(attribute="id") %}
                 {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+
                     {%- if nsVariables.colchanges == 1 %}
                         {{ stage('Add Columns') }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         ADD COLUMN
                     {% else -%}
-                        ,
-                    {% endif -%}
+                        ,{% endif -%}
                         "{{ addDesCol.name }}" {{ addDesCol.dataType }}
                         {%- if not addDesCol.nullable %} NOT NULL
-                            {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{%- endif -%}
+                            {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{% endif %}
                         {% endif %}
                         {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDesCol.description | escape }}'{% endif -%}
+
                         {# Metadata changes detected #}
-                        {%- set nsMetaVariables.metaDataChanged = true -%} 
+                        {% set nsMetaVariables.metaDataChanged = true %}
                 {%- endif %}
             {%- endfor %}
 
             {# Rename Columns #}
-            {%- for renameCurCol in currentState.columns %}
-                {%- if renameCurCol.id in desiredState.columns | map(attribute="id") %}
+            {% for renameCurCol in currentState.columns %}
+                {% if renameCurCol.id in desiredState.columns | map(attribute="id") %}
                     {% set desiredColumnName = desiredState.columns | selectattr('id', 'equalto', renameCurCol.id) | map(attribute='name') | first %}
-                    {%- if renameCurCol.name != desiredColumnName %}
+                    {% if renameCurCol.name != desiredColumnName %}
                         {{ stage('Rename Column ' + renameCurCol.name) }}
                         ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                         RENAME COLUMN "{{ renameCurCol.name }}"
                         TO "{{ desiredColumnName }}"
 
                         {# Metadata changes detected #}
-                        {% set nsMetaVariables.metaDataChanged = true %} 
+                        {% set nsMetaVariables.metaDataChanged = true %}
                     {% endif %}
-                {%- endif -%}
-            {%- endfor %}
+                {% endif %}
+            {% endfor %}
 
             {# Change data types etc #}
-            {% set nsVariables.colchanges = 0 %}
-            {%- for alterCurCol in currentState.columns %}
+            {%- set nsVariables.colchanges = 0 %}
+            {%- for alterCurCol in currentState.columns %}        
                 {%- if alterCurCol.id in desiredState.columns | map(attribute="id") %}
                     {%- set currentDatatype = alterCurCol.dataType %}
                     {%- set currentNullable = alterCurCol.nullable %}
@@ -687,29 +671,34 @@ does not permit copying or modification for any other purpose.
                     {%- set desiredDefaultValue = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='defaultValue') | first %}
                     {%- set desiredDescription = desiredState.columns | selectattr('id', "equalto", alterCurCol.id) | map(attribute='description') | first %}
 
+                    {%- set desiredDatatypeAlterBehavior = desiredState.config.dataTypeAlterBehavior %}
+                    {%- set desiredNullableAlterBehavior = desiredState.config.nullableAlterBehavior %}
+                    {%- set desiredDataTypeAlterBehavior = desiredState.config.dataTypeAlterBehavior %}
+
                     {%- set datatypeTest = currentDatatype == desiredDatatype %}
                     {%- set nullableTest = currentNullable == desiredNullable %}
                     {%- set defaultValueTest = currentDefaultValue == desiredDefaultValue %}
                     {%- set descriptionTest = currentDescription == desiredDescription %}
 
                     {%- if (datatypeTest == false or 
-                            nullableTest == false or
+                            nullableTest == false  or
                             defaultValueTest == false or
                             descriptionTest == false) %}
                         {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+
                         {%- if nsVariables.colchanges == 1 %}
                             {{ stage('Change Column Attributes') }}
                             ALTER TABLE {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
                             MODIFY
                         {%- endif -%}
                         {%- if datatypeTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{%- endif %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
                             SET DATA TYPE {{ desiredDatatype }}
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
-                        {%- endif -%}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
                         {%- if nullableTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{%- endif %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
                             {%- if currentNullable == true %}
                                 SET
@@ -717,34 +706,34 @@ does not permit copying or modification for any other purpose.
                                 DROP
                             {%- endif %}
                             NOT NULL
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
-                        {%- endif -%}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
                         {%- if descriptionTest == false %}
-                            {%- if nsVariables.colchanges > 1 %},{%- endif %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
                             COMMENT '{{ desiredDescription |escape }}'
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
-                        {%- endif -%}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
                         {%- if defaultValueTest == false %}
-                            {%- if nsVariables.colchanges > 1 -%},{% endif %}
+                            {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
-                            {%- if desiredDefaultValue == '' %}
+                            {% if desiredDefaultValue == '' %}
                                 DROP DEFAULT
-                            {%- else %}
+                            {%- else -%}
                                 SET DEFAULT {{ desiredDefaultValue }}
-                            {%- endif -%}
-                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 -%}
-                        {%- endif -%}
+                            {% endif %}
+                            {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
+                        {% endif %}
 
-                        {# Metadata changes detected #}
-                        {% set nsMetaVariables.metaDataChanged = true %} 
-						
-					{% else %}
-					
-                    {%- endif %}
+                        {#- Metadata changes detected -#}
+                        {%- set nsMetaVariables.metaDataChanged = true %}
+                        
+                    {% else %}
+                                            
+                    {% endif %}
                 {%- endif %}
             {%- endfor %}
-            
+
             {# Figure out cluster key #}
             {% set nsVariables = namespace(finalClusterKey="") %}
             {% if clusterTest == false %}
@@ -786,7 +775,8 @@ does not permit copying or modification for any other purpose.
                 {{ nsVariables.finalClusterKey }}
 
                 {# Metadata changes detected #}
-                {% set nsMetaVariables.metaDataChanged = true %} 
+                {% set nsMetaVariables.metaDataChanged = true %}
+
             {% endif %}
 
             {# =========================================================
@@ -796,6 +786,7 @@ does not permit copying or modification for any other purpose.
                 {{ stage('Metadata Update-Default') }}
                 select 1=0
             {% endif %}
+
         {% endif %}
 
 
@@ -807,9 +798,8 @@ does not permit copying or modification for any other purpose.
     {% set targetObjectDatabase = ref_no_link(currentState.node.location.name, currentState.node.name).split('.')[0] %} 
     {% set targetObjectSchema = ref_no_link(currentState.node.location.name, currentState.node.name).split('.')[1] %} 
     {% set fullyQualifiedTargetObjectName = ref_no_link(currentState.node.location.name, currentState.node.name) %}
-    
-    {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
-    {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
-    DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
 
+        {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+        {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
+        DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
 {% endif %}
