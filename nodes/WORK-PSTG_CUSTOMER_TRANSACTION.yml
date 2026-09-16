@@ -15,7 +15,11 @@ operation:
     dmlDelete: D
     groupByAll: false
     insertStrategy: UNION ALL
-    lastModifiedComparison: false
+    lastModifiedColumn:
+      columnCounter: 60075d33-ed76-4b85-97ce-b4991a3eb9f4
+      name: CUSTOMER_ID
+      stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
+    lastModifiedComparison: true
     orderby: false
     orderbycolumn:
       items:
@@ -59,6 +63,7 @@ operation:
         config: {}
         dataType: NUMBER(38,0)
         description: ""
+        isBusinessKey: true
         name: CUSTOMER_ID
         nullable: false
         sourceColumnReferences:

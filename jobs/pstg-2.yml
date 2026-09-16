@@ -1,0 +1,6 @@
+excludeSelector: ""
+fileVersion: 1
+id: "2"
+includeSelector: "{ location: \"WORK\" name: \"PSTG_CUSTOMER_TRANSACTION\" } OR { location: \"SRC\" name: \"CUSTOMER_TRANSACTION\" }"
+name: pstg
+type: Job
