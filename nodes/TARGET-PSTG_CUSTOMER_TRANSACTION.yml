@@ -12,9 +12,11 @@ operation:
         - {}
     clusterKeyExpressions: false
     deleteStrategy: NO DELETE
+    dmlCol: ""
     dmlDelete: D
     groupByAll: false
     insertStrategy: INSERT
+    lastModifiedColumn: ""
     lastModifiedComparison: false
     orderby: false
     orderbycolumn:

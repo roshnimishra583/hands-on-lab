@@ -97,8 +97,7 @@ does not permit copying or modification for any other purpose.
         (
             {%- for col in desiredState.columns -%}
                 "{{ col.name }}" {{ col.dataType }}
-                {% if col.isSurrogateKey %}
-                    identity
+                {% if col.isSurrogateKey -%} identity
                 {% endif %}
                 {%- if not col.nullable %} NOT NULL
                     {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
