@@ -29,7 +29,7 @@ operation:
     selectDistinct: false
     testsEnabled: false
     truncateBefore: false
-    type2Dimension: false
+    type2Dimension: true
   database: ""
   deployEnabled: true
   description: new desc
