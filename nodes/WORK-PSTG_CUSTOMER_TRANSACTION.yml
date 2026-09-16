@@ -28,7 +28,7 @@ operation:
     type2Dimension: false
   database: ""
   deployEnabled: true
-  description: ""
+  description: new desc
   isMultisource: false
   locationName: WORK
   materializationType: table
@@ -60,7 +60,7 @@ operation:
         dataType: NUMBER(38,0)
         description: ""
         name: CUSTOMER_ID
-        nullable: true
+        nullable: false
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: cd2c0885-d0ec-4bc2-aab4-df04d553d2f1
@@ -86,7 +86,7 @@ operation:
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
         dataType: VARCHAR(100)
-        description: ""
+        description: TEST DESCRIPTION
         name: FIRST_NAME
         nullable: true
         sourceColumnReferences:
@@ -129,7 +129,7 @@ operation:
         config: {}
         dataType: VARCHAR(255)
         description: ""
-        name: EMAIL_ADDRESS
+        name: EMAIL_ID
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -169,7 +169,7 @@ operation:
           columnCounter: 48c19f30-3a33-4e5f-847b-0e8a08224142
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
-        dataType: VARCHAR(20)
+        dataType: VARCHAR
         description: ""
         name: GENDER
         nullable: true
@@ -880,34 +880,6 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 40ffef70-478a-44bf-8170-b2ddb661fa41
-          stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
-        config: {}
-        dataType: VARCHAR(100)
-        description: ""
-        name: SOURCE_RECORD_ID
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: b852d444-1d2c-473b-a513-338a07c923af
-                stepCounter: 93db9281-7464-4fd8-9cc2-b8a90eed6824
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: 851fe8e6-649f-4511-a17a-23a9e60be8d8
-          stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
-        config: {}
-        dataType: NUMBER(38,0)
-        description: ""
-        name: BATCH_ID
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: b2b0105f-eff5-412e-b9e3-2aa427c730ee
-                stepCounter: 93db9281-7464-4fd8-9cc2-b8a90eed6824
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
           columnCounter: 8d2dab0f-6d0f-4144-ba7d-0e8423a0ea4d
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
@@ -934,6 +906,46 @@ operation:
               - columnCounter: 3363b5ea-a906-4429-ba76-1f61d3087df7
                 stepCounter: 93db9281-7464-4fd8-9cc2-b8a90eed6824
             transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 188a14bf-acd8-473e-83ba-c1b592c2403a
+          stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test_col
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
+        systemColumnType: None
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 87ee7398-725f-4d57-b78c-97164fc92c86
+          stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: Test_col2
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
+        systemColumnType: None
       - acceptedValues:
           strictMatch: true
           values: []
