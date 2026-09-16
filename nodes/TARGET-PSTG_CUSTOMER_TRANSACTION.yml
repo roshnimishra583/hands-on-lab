@@ -34,7 +34,7 @@ operation:
     type2Dimension: false
   database: ""
   deployEnabled: true
-  description: ""
+  description: abc
   isMultisource: false
   locationName: TARGET
   materializationType: table
