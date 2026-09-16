@@ -90,7 +90,7 @@ operation:
           columnCounter: 6127a191-ae5e-4dcb-82dd-c0f0a3ce2d46
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
-        dataType: VARCHAR(100)
+        dataType: VARCHAR(50)
         description: TEST DESCRIPTION
         name: FIRST_NAME
         nullable: true
@@ -105,7 +105,7 @@ operation:
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
         dataType: VARCHAR(100)
-        description: ""
+        description: desc
         name: LAST_NAME
         nullable: true
         sourceColumnReferences:
@@ -135,7 +135,7 @@ operation:
         dataType: VARCHAR(255)
         description: ""
         name: EMAIL_Add
-        nullable: true
+        nullable: false
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 326b74a1-7bc8-418d-841d-378a1c21d6ac
@@ -149,7 +149,7 @@ operation:
         dataType: VARCHAR(40)
         description: ""
         name: PHONE_NUMBER
-        nullable: true
+        nullable: false
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: cad01221-4041-430d-b92b-a04798bc28d5
@@ -161,7 +161,7 @@ operation:
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
         dataType: DATE
-        description: ""
+        description: test desc
         name: DATE_OF_BIRTH
         nullable: false
         sourceColumnReferences:
@@ -174,7 +174,7 @@ operation:
           columnCounter: 48c19f30-3a33-4e5f-847b-0e8a08224142
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
-        dataType: VARCHAR
+        dataType: VARCHAR(20)
         description: ""
         name: GENDER
         nullable: true

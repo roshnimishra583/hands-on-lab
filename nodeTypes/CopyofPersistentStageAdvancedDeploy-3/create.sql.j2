@@ -696,7 +696,7 @@ does not permit copying or modification for any other purpose.
                             COLUMN "{{ desiredColumnName }}"
                             SET DATA TYPE {{ desiredDatatype }}
                             {%- set nsVariables.colchanges = nsVariables.colchanges + 1 %}
-                        {% endif %}
+                        {%- endif %}
                         {%- if nullableTest == false %}
                             {%- if nsVariables.colchanges > 1 %},{% endif %}
                             COLUMN "{{ desiredColumnName }}"
@@ -728,9 +728,9 @@ does not permit copying or modification for any other purpose.
                         {#- Metadata changes detected -#}
                         {%- set nsMetaVariables.metaDataChanged = true %}
                         
-                    {% else %}
+                    {%- else %}
                                             
-                    {% endif %}
+                    {%- endif %}
                 {%- endif %}
             {%- endfor %}
 
