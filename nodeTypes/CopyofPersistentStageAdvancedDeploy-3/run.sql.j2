@@ -114,8 +114,7 @@
                         'Y'
                     {%- else %}
                     {{ get_source_transform(col) }}
-                    {%- endif %}
-                    AS "{{ col.name }}",
+                    {%- endif %} AS "{{ col.name }}",
                 {%- endfor %}
                     'INSERT_INITAL_VERSION_ROWS' AS "DML_OPERATION"
                 {{  get_clause(source.join,'from')  }}
@@ -160,8 +159,7 @@
                         'Y'
                     {%- else %}
                     {{ get_source_transform(col) }}
-                    {%- endif %}
-                    AS "{{ col.name }}",
+                    {%- endif %} AS "{{ col.name }}",
                 {%- endfor %}
                     'INSERT_NEW_VERSION_ROWS' AS "DML_OPERATION"
                 {{  get_clause(source.join,'from')  }}
@@ -173,7 +171,7 @@
                     {{ get_source_transform(col) }} = "DIM"."{{ col.name }}"
                 {%- endfor %}
                 WHERE "DIM"."{{ get_value_by_column_attribute("isSystemCurrentFlag") }}" = 'Y'
-                {%-if config.lastModifiedComparison %} 
+                {%if config.lastModifiedComparison %} 
                 {%- for col in source.columns if col.name == last_modified_col -%}
                     AND
                   {{ get_source_transform(col) }} > "DIM"."{{last_modified_col}}"
@@ -252,9 +250,8 @@
                         'N'
                     {%- else %}
                         "DIM"."{{ col.name }}"
-                    {%- endif %}
-                    AS "{{ col.name }}",
-                {%- endfor -%}
+                    {%- endif %} AS "{{ col.name }}",
+                {%- endfor %}
                     'update_expired_version_rows' AS "DML_OPERATION"
                 {{  get_clause(source.join,'from')  }}
                 INNER JOIN {{ ref_no_link(node.location.name, node.name) }} "DIM" ON
@@ -265,7 +262,7 @@
                     {{ get_source_transform(col) }} = "DIM"."{{ col.name }}"
                 {%- endfor %}
                 WHERE "DIM"."{{ get_value_by_column_attribute("isSystemCurrentFlag") }}" = 'Y'
-                {%-if config.lastModifiedComparison %} 
+                {%if config.lastModifiedComparison %} 
                 {%- for col in source.columns if col.name == last_modified_col -%}
                         AND
                   {{ get_source_transform(col) }} > "DIM"."{{last_modified_col}}"
@@ -321,7 +318,7 @@
                 {{  get_clause(source.join)  }}
                 {%- if config.groupByAll %}
                 GROUP BY ALL
-                {%- endif -%}
+                {%- endif %}
                 {{ sortorder_by_colv() }}
                 )
 
@@ -340,9 +337,8 @@
                         "DIM"."{{ col.name }}"
                     {%- else %}
                         {{ get_source_transform(col) }}
-                    {%- endif %}
-                    AS "{{ col.name }}",
-                {%- endfor -%}
+                    {%- endif %} AS "{{ col.name }}",
+                {%- endfor %}
                     'DELETE_ROWS' AS "DML_OPERATION"
                 {{  get_clause(source.join,'from')  }}
                 INNER JOIN {{ ref_no_link(node.location.name, node.name) }} "DIM" ON
@@ -398,8 +394,7 @@
                         'Y'
                     {%- else %}
                         {{ get_source_transform(col) }}
-                    {%- endif %}
-                    AS "{{ col.name }}",
+                    {%- endif %} AS "{{ col.name }}",
                 {%- endfor -%}
                     'UPDATE_NON_TYPE2_ROWS' AS "DML_OPERATION"
                 {{  get_clause(source.join,'from')  }}
@@ -862,8 +857,7 @@
                         'Y'
                     {%- else %}
                         {{ get_source_transform(col) }}
-                    {%- endif %}
-                    AS "{{ col.name }}"
+                    {%- endif %} AS "{{ col.name }}"
                     {%- if not loop.last -%}, {% endif %}
                     
                 {%- endfor %}

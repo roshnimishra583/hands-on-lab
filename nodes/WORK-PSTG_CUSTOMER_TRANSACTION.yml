@@ -134,7 +134,7 @@ operation:
         config: {}
         dataType: VARCHAR(255)
         description: ""
-        name: EMAIL_ID
+        name: EMAIL_Add
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -146,7 +146,7 @@ operation:
           columnCounter: d9181157-d9a8-40a4-b138-c2bdb35d70b7
           stepCounter: 58f9584e-a892-49e8-94cf-630825f2efb5
         config: {}
-        dataType: VARCHAR(30)
+        dataType: VARCHAR(40)
         description: ""
         name: PHONE_NUMBER
         nullable: true
@@ -163,7 +163,7 @@ operation:
         dataType: DATE
         description: ""
         name: DATE_OF_BIRTH
-        nullable: true
+        nullable: false
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 15d58705-2ac5-4830-bd61-7f02d769726f
@@ -196,7 +196,7 @@ operation:
           - columnReferences:
               - columnCounter: 274ad4e6-a167-466b-a4de-b687815e60f0
                 stepCounter: 93db9281-7464-4fd8-9cc2-b8a90eed6824
-            transform: ""
+            transform: "NULL"
       - appliedColumnTests: {}
         columnReference:
           columnCounter: 75ba32a8-8687-427b-bbb8-d5e6b43e24d6
