@@ -1,0 +1,111 @@
+fileVersion: 1
+id: 21b8bbd7-01e1-492f-a031-6dfbf04a81aa
+name: SMV_CUSTOMER_test
+operation:
+  config:
+    DimConfig:
+      items:
+        - dimAlias: ""
+          dimCol:
+            columnCounter: acb10323-9813-4c10-91f6-4864820ccde2
+            name: C_NAME
+            stepCounter: 21b8bbd7-01e1-492f-a031-6dfbf04a81aa
+          dimComment: ""
+          dimSynonym: ""
+          dimTransform: ""
+    aiQuestionCategorization: ""
+    aiSqlGeneration: ""
+    aiVerifiedQueries:
+      items:
+        - name: cust_lookup
+          question: What is the name of the customer with customer key 600012?
+          sql: |-
+            SELECT CUSTOMER.C_NAME
+            FROM CUSTOMER
+            WHERE CUSTOMER.C_CUSTKEY = 600012
+          useAsOnboardingQuestion: true
+          verifiedAt: "1714497970"
+          verifiedBy: Roshni
+    deriveCol: false
+    dimToggle: true
+    factDetConfig:
+      items:
+        - {}
+    factToggle: false
+    foreignKeyConfig:
+      items:
+        - {}
+    foreignToggle: false
+    metricConfig:
+      items:
+        - {}
+    metricToggle: false
+    primaryKeyConfig:
+      items:
+        - primAlias: Customer
+          primComment: ""
+          primSynonym: ""
+          primaryKey:
+            columnCounter: 08dc1064-bffb-4ce6-99e1-dc3d3a77ad35
+            name: C_CUSTKEY
+            stepCounter: 21b8bbd7-01e1-492f-a031-6dfbf04a81aa
+    semanticMaterialization: semantic view
+    tableOnlyToggle: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: WORK
+  materializationType: semantic view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 08dc1064-bffb-4ce6-99e1-dc3d3a77ad35
+          stepCounter: 21b8bbd7-01e1-492f-a031-6dfbf04a81aa
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: C_CUSTKEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 63f02d54-9376-46f4-a0bd-cfd98b938088
+                stepCounter: 0f88469c-57c9-43da-bc40-a559bdb5edc7
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: acb10323-9813-4c10-91f6-4864820ccde2
+          stepCounter: 21b8bbd7-01e1-492f-a031-6dfbf04a81aa
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: C_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e75d82c4-ede1-4019-a7a8-3fbe7c144298
+                stepCounter: 0f88469c-57c9-43da-bc40-a559bdb5edc7
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          CUSTOMER: 0f88469c-57c9-43da-bc40-a559bdb5edc7
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SRC
+            nodeName: CUSTOMER
+        join:
+          joinCondition: FROM {{ ref('SRC', 'CUSTOMER') }} "CUSTOMER"
+        name: SMV_CUSTOMER_test
+        noLinkRefs: []
+  name: SMV_CUSTOMER_test
+  overrideSQL: false
+  schema: ""
+  sqlType: "5"
+  type: sql
+  version: 1
+type: Node
